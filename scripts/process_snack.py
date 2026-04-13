@@ -7,6 +7,7 @@ data/snacks.json, assets/histogram.svg, README.md를 업데이트합니다.
 
 import os
 import json
+import math
 import re
 import sys
 import html
@@ -180,24 +181,18 @@ def get_calorie_info(snack_name: str, unit: str, cache: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# SVG 히스토그램 생성
+# SVG 히스토그램 생성 (세로형 스택 막대 차트)
 # ---------------------------------------------------------------------------
 
-# 순위별 색상 팔레트 (1위부터 순서대로)
-BAR_COLORS = [
-    "#FFD700",  # 금
-    "#C0C0C0",  # 은
-    "#CD7F32",  # 동
-    "#6BCB77",  # 초록
-    "#4D96FF",  # 파랑
-    "#FF6B6B",  # 빨강
-    "#A57BDB",  # 보라
-    "#FFA94D",  # 주황
-    "#38D9A9",  # 민트
-    "#F06595",  # 핑크
+# 간식별 색상 팔레트
+SNACK_PALETTE = [
+    "#FF6B6B", "#FFD93D", "#6BCB77", "#4D96FF", "#A57BDB",
+    "#FF9F43", "#38D9A9", "#F06595", "#74B9FF", "#FDCB6E",
+    "#E17055", "#00CEC9", "#6C5CE7", "#FD79A8", "#B2BEC3",
 ]
 
 RANK_ICONS = ["🥇", "🥈", "🥉"]
+FONT = "system-ui,-apple-system,'Segoe UI',sans-serif"
 
 
 def _esc(text: str) -> str:
@@ -207,8 +202,9 @@ def _esc(text: str) -> str:
 
 def generate_svg(data: dict) -> str:
     """
-    수평 막대 히스토그램 SVG를 생성합니다.
-    외부 라이브러리 없이 순수 Python으로 생성하므로 CI 환경에서 안정적입니다.
+    세로형 스택 막대 차트 SVG를 생성합니다.
+    - 각 막대는 간식별로 색상을 달리하여 쌓아올립니다.
+    - 배경 흰색, 범례 하단 표시.
     """
     contributors: dict = data.get("contributors", {})
     if not contributors:
@@ -219,114 +215,167 @@ def generate_svg(data: dict) -> str:
         key=lambda x: x[1]["total_calories"],
         reverse=True,
     )
-
-    # ── 레이아웃 상수 ──────────────────────────────────────────────
-    W = 740           # SVG 전체 너비
-    LEFT = 170        # 이름 영역 너비
-    RIGHT_PAD = 130   # 칼로리 텍스트 + 여백
-    BAR_AREA = W - LEFT - RIGHT_PAD   # 실제 막대가 그려지는 너비
-    BAR_H = 36        # 막대 높이
-    BAR_GAP = 14      # 막대 사이 간격
-    TOP = 90          # 상단 여백 (제목 + 부제목)
-    BOTTOM = 50       # 하단 여백
-    RADIUS = 6        # 막대 모서리 반경
-
     n = len(sorted_list)
-    H = TOP + n * (BAR_H + BAR_GAP) - BAR_GAP + BOTTOM
 
-    max_cal = sorted_list[0][1]["total_calories"] if sorted_list else 1
+    # ── 간식별 색상 할당 (모든 기여자에서 동일 색상 유지) ────────────
+    all_snack_names: list[str] = []
+    for _, info in sorted_list:
+        for s in info["snacks"]:
+            if s["name"] not in all_snack_names:
+                all_snack_names.append(s["name"])
+    snack_color = {
+        name: SNACK_PALETTE[i % len(SNACK_PALETTE)]
+        for i, name in enumerate(all_snack_names)
+    }
+
+    # ── 레이아웃 ─────────────────────────────────────────────────
+    if n <= 3:
+        BAR_W, GAP = 90, 36
+    elif n <= 6:
+        BAR_W, GAP = 72, 28
+    elif n <= 10:
+        BAR_W, GAP = 56, 20
+    else:
+        BAR_W, GAP = 44, 14
+
+    LEFT      = 58    # y축 레이블
+    RIGHT     = 20
+    TOP       = 80    # 제목 영역
+    CHART_H   = 280   # 막대 최대 높이
+    NAME_H    = 50    # 기여자 이름 영역
+    LEGEND_COLS = min(3, len(all_snack_names)) if all_snack_names else 1
+    LEGEND_ROWS = math.ceil(len(all_snack_names) / LEGEND_COLS) if all_snack_names else 0
+    LEGEND_H  = LEGEND_ROWS * 22 + 20 if all_snack_names else 0
+    BOTTOM    = NAME_H + LEGEND_H + 16
+
+    W = max(LEFT + n * (BAR_W + GAP) - GAP + RIGHT, 480)
+    H = TOP + CHART_H + BOTTOM
+
+    bar_base_y = TOP + CHART_H  # 막대 하단 기준선 y
+    max_cal   = sorted_list[0][1]["total_calories"] if sorted_list else 1
     total_cal = sum(v["total_calories"] for v in contributors.values())
+    total_snack_count = sum(
+        s["quantity"] * s.get("count_per_unit", 1)
+        for info in contributors.values()
+        for s in info["snacks"]
+    )
 
     lines: list[str] = []
 
-    # ── 배경 ──────────────────────────────────────────────────────
-    lines.append(f'<rect width="{W}" height="{H}" rx="14" fill="#0D1117"/>')
-
-    # ── 격자선 (옅게) ─────────────────────────────────────────────
-    grid_steps = 4
-    for i in range(1, grid_steps + 1):
-        gx = LEFT + round(BAR_AREA * i / grid_steps)
-        lines.append(
-            f'<line x1="{gx}" y1="{TOP - 10}" x2="{gx}" y2="{H - BOTTOM + 10}" '
-            f'stroke="#30363D" stroke-width="1" stroke-dasharray="4,3"/>'
-        )
+    # ── 배경 & 테두리 ─────────────────────────────────────────────
+    lines.append(f'<rect width="{W}" height="{H}" fill="#FFFFFF"/>')
+    lines.append(
+        f'<rect width="{W}" height="{H}" rx="12" '
+        f'fill="none" stroke="#E8E8E8" stroke-width="1"/>'
+    )
 
     # ── 제목 ──────────────────────────────────────────────────────
     lines.append(
-        f'<text x="{W // 2}" y="36" text-anchor="middle" '
-        f'font-family="system-ui,-apple-system,Segoe UI,sans-serif" '
-        f'font-size="20" font-weight="700" fill="#F0F6FC">'
+        f'<text x="{W // 2}" y="30" text-anchor="middle" '
+        f'font-family="{FONT}" font-size="17" font-weight="700" fill="#1A1A2E">'
         f'&#x1F37F; Snack Calorie Rankings</text>'
     )
     lines.append(
-        f'<text x="{W // 2}" y="60" text-anchor="middle" '
-        f'font-family="system-ui,-apple-system,Segoe UI,sans-serif" '
-        f'font-size="13" fill="#8B949E">'
-        f'Total {total_cal:,} kcal &#160;·&#160; {n} contributors</text>'
+        f'<text x="{W // 2}" y="52" text-anchor="middle" '
+        f'font-family="{FONT}" font-size="12" fill="#999">'
+        f'Total {total_cal:,} kcal &#160;·&#160; {n} contributors '
+        f'&#160;·&#160; {total_snack_count:,} snacks</text>'
     )
 
-    # ── 막대 ──────────────────────────────────────────────────────
+    # ── Y축 격자선 + 레이블 ───────────────────────────────────────
+    grid_steps = 5
+    for i in range(grid_steps + 1):
+        cal_val = round(max_cal * i / grid_steps)
+        gy = bar_base_y - round(CHART_H * i / grid_steps)
+        stroke = "#EFEFEF" if i > 0 else "#DDDDDD"
+        lines.append(
+            f'<line x1="{LEFT - 4}" y1="{gy}" x2="{W - RIGHT}" y2="{gy}" '
+            f'stroke="{stroke}" stroke-width="1"/>'
+        )
+        label = f"{cal_val // 1000}k" if cal_val >= 1000 else str(cal_val)
+        lines.append(
+            f'<text x="{LEFT - 8}" y="{gy + 4}" text-anchor="end" '
+            f'font-family="{FONT}" font-size="10" fill="#BBBBBB">{_esc(label)}</text>'
+        )
+
+    # ── 막대 (스택형) ─────────────────────────────────────────────
     for idx, (username, info) in enumerate(sorted_list):
-        cal = info["total_calories"]
-        bar_w = max(round((cal / max_cal) * BAR_AREA), 6) if max_cal > 0 else 6
-        y = TOP + idx * (BAR_H + BAR_GAP)
-        cx = y + BAR_H // 2   # 세로 중심 y 좌표
-        color = BAR_COLORS[idx % len(BAR_COLORS)]
+        x = LEFT + idx * (BAR_W + GAP)
+        total_h = max(round((info["total_calories"] / max_cal) * CHART_H), 2) if max_cal > 0 else 2
+        bar_top_y = bar_base_y - total_h
         rank_label = RANK_ICONS[idx] if idx < 3 else f"#{idx + 1}"
 
-        # 순위 아이콘 (이모지는 SVG에서 unicode escape로)
+        # 클립패스로 둥근 모서리 적용
+        clip_id = f"c{idx}"
         lines.append(
-            f'<text x="{LEFT - 10}" y="{cx + 5}" text-anchor="end" '
-            f'font-family="system-ui,-apple-system,Segoe UI,sans-serif" '
-            f'font-size="18" fill="#8B949E">{_esc(rank_label)}</text>'
+            f'<clipPath id="{clip_id}">'
+            f'<rect x="{x}" y="{bar_top_y}" width="{BAR_W}" height="{total_h}" rx="5"/>'
+            f'</clipPath>'
         )
 
-        # 사용자명 (한글 이름 있으면 우선, 없으면 @github_id)
+        # 막대 배경
+        lines.append(
+            f'<rect x="{x}" y="{bar_top_y}" width="{BAR_W}" '
+            f'height="{total_h}" rx="5" fill="#F5F5F5"/>'
+        )
+
+        # 간식 세그먼트 (아래→위)
+        lines.append(f'<g clip-path="url(#{clip_id})">')
+        current_y = bar_base_y
+        for s in reversed(info["snacks"]):
+            seg_h = max(round((s["total_calories"] / max_cal) * CHART_H), 2) if max_cal > 0 else 2
+            current_y -= seg_h
+            color = snack_color.get(s["name"], "#CCC")
+            lines.append(
+                f'  <rect x="{x}" y="{current_y}" width="{BAR_W}" '
+                f'height="{seg_h}" fill="{color}"/>'
+            )
+        lines.append('</g>')
+
+        # 순위 이모지 (막대 위)
+        lines.append(
+            f'<text x="{x + BAR_W // 2}" y="{bar_top_y - 20}" text-anchor="middle" '
+            f'font-family="{FONT}" font-size="16" fill="#555">{_esc(rank_label)}</text>'
+        )
+        # 칼로리 수치 (막대 위, 순위 아래)
+        lines.append(
+            f'<text x="{x + BAR_W // 2}" y="{bar_top_y - 6}" text-anchor="middle" '
+            f'font-family="{FONT}" font-size="10" font-weight="600" fill="#444">'
+            f'{info["total_calories"]:,}</text>'
+        )
+
+        # 기여자 이름 (막대 아래)
         display = info.get("display_name") or username
-        label_text = display if display != username else f"@{username}"
+        name_label = display if display != username else f"@{username}"
         lines.append(
-            f'<text x="{LEFT - 34}" y="{cx + 5}" text-anchor="end" '
-            f'font-family="system-ui,-apple-system,Segoe UI,sans-serif" '
-            f'font-size="13" font-weight="600" fill="#E6EDF3">'
-            f'{_esc(label_text)}</text>'
+            f'<text x="{x + BAR_W // 2}" y="{bar_base_y + 18}" text-anchor="middle" '
+            f'font-family="{FONT}" font-size="12" font-weight="700" fill="#333">'
+            f'{_esc(name_label)}</text>'
         )
+        if display != username:
+            lines.append(
+                f'<text x="{x + BAR_W // 2}" y="{bar_base_y + 32}" text-anchor="middle" '
+                f'font-family="{FONT}" font-size="10" fill="#BBBBBB">'
+                f'@{_esc(username)}</text>'
+            )
 
-        # 막대 배경 (트랙)
-        lines.append(
-            f'<rect x="{LEFT}" y="{y}" width="{BAR_AREA}" height="{BAR_H}" '
-            f'rx="{RADIUS}" fill="#21262D"/>'
-        )
-
-        # 막대 본체 (애니메이션 포함)
-        lines.append(
-            f'<rect x="{LEFT}" y="{y}" width="{bar_w}" height="{BAR_H}" '
-            f'rx="{RADIUS}" fill="{color}" opacity="0.90">'
-            f'<animate attributeName="width" from="0" to="{bar_w}" '
-            f'dur="0.6s" begin="{idx * 0.08:.2f}s" fill="freeze" '
-            f'calcMode="spline" keyTimes="0;1" '
-            f'keySplines="0.4 0 0.2 1"/>'
-            f'</rect>'
-        )
-
-        # 칼로리 숫자 (막대 오른쪽)
-        lines.append(
-            f'<text x="{LEFT + bar_w + 10}" y="{cx + 5}" '
-            f'font-family="system-ui,-apple-system,Segoe UI,sans-serif" '
-            f'font-size="13" font-weight="600" fill="{color}">'
-            f'{cal:,} kcal</text>'
-        )
-
-    # ── 하단 x축 레이블 ───────────────────────────────────────────
-    axis_y = H - BOTTOM + 24
-    for i in range(grid_steps + 1):
-        gx = LEFT + round(BAR_AREA * i / grid_steps)
-        label_cal = round(max_cal * i / grid_steps)
-        label = f"{label_cal // 1000}k" if label_cal >= 1000 else str(label_cal)
-        lines.append(
-            f'<text x="{gx}" y="{axis_y}" text-anchor="middle" '
-            f'font-family="system-ui,-apple-system,Segoe UI,sans-serif" '
-            f'font-size="11" fill="#484F58">{_esc(label)}</text>'
-        )
+    # ── 범례 ─────────────────────────────────────────────────────
+    if all_snack_names:
+        legend_top = TOP + CHART_H + NAME_H + 4
+        col_w = (W - LEFT - RIGHT) // LEGEND_COLS
+        for i, name in enumerate(all_snack_names):
+            col = i % LEGEND_COLS
+            row = i // LEGEND_COLS
+            lx = LEFT + col * col_w
+            ly = legend_top + row * 22
+            color = snack_color[name]
+            lines.append(
+                f'<rect x="{lx}" y="{ly}" width="11" height="11" rx="3" fill="{color}"/>'
+            )
+            lines.append(
+                f'<text x="{lx + 15}" y="{ly + 9}" '
+                f'font-family="{FONT}" font-size="11" fill="#666">{_esc(name)}</text>'
+            )
 
     inner = "\n  ".join(lines)
     return (
@@ -386,6 +435,11 @@ def generate_readme(data: dict) -> str:
         reverse=True,
     )
     total_cal = sum(v["total_calories"] for v in contributors.values())
+    total_snack_count = sum(
+        s["quantity"] * s.get("count_per_unit", 1)
+        for info in contributors.values()
+        for s in info["snacks"]
+    )
 
     # ── 상세 내역 (접을 수 있는 섹션) ──
     detail_blocks = []
@@ -434,7 +488,7 @@ def generate_readme(data: dict) -> str:
 
     return f"""# 🍿 간식 칼로리 기여 현황
 
-> 총 기여 칼로리: **{total_cal:,} kcal** &nbsp;|&nbsp; 참여자: **{len(contributors)}명**
+> 🍬 총 간식: **{total_snack_count:,}개** &nbsp;|&nbsp; 🔥 총 칼로리: **{total_cal:,} kcal** &nbsp;|&nbsp; 👥 참여자: **{len(contributors)}명**
 
 ## 🏆 랭킹
 
