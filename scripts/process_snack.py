@@ -43,35 +43,48 @@ def save_data(data: dict) -> None:
 # 파일 파싱
 # ---------------------------------------------------------------------------
 
-def parse_contribution_file(filepath: Path) -> list[tuple[str, int, str]]:
+def parse_contribution_file(filepath: Path) -> tuple[str | None, list[tuple[str, int, str]]]:
     """
-    txt 파일을 읽어 (간식명, 개수, 단위) 리스트를 반환합니다.
+    txt 파일을 읽어 (표시이름, [(간식명, 개수, 단위)]) 를 반환합니다.
+
+    파일 첫 줄에 '# 이름: 홍길동' 형식으로 한글 표시 이름을 지정할 수 있습니다.
+    없으면 파일명(GitHub ID)을 그대로 사용합니다.
+
     지원 형식:
+      # 이름: 홍길동       → 표시 이름 "홍길동"
       오예스 12개          → ("오예스", 12, "개")
-      포카칩 2봉지         → ("포카칩", 2, "봉지")
       초코파이 1박스       → ("초코파이", 1, "박스")
       콜라 3캔             → ("콜라", 3, "캔")
-      새우깡 1봉           → ("새우깡", 1, "봉")
-      오레오 2팩           → ("오레오", 2, "팩")
-    단위가 없으면 "개"로 기본값 처리.
     """
+    display_name: str | None = None
     snacks = []
-    # 숫자 앞까지 = 간식명, 숫자, 이후 한글/영문 = 단위
-    pattern = re.compile(r"^(.+?)\s+(\d+)\s*([가-힣a-zA-Z]*)")
+    name_pattern = re.compile(r"^#\s*이름\s*[:：]\s*(.+)")
+    snack_pattern = re.compile(r"^(.+?)\s+(\d+)\s*([가-힣a-zA-Z]*)")
+
     with open(filepath, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
-            if not line or line.startswith("#"):
+            if not line:
                 continue
-            match = pattern.match(line)
-            if match:
-                snack_name = match.group(1).strip()
-                quantity = int(match.group(2))
-                unit = match.group(3).strip() or "개"
+            # 이름 지시어 파싱
+            name_match = name_pattern.match(line)
+            if name_match:
+                display_name = name_match.group(1).strip()
+                continue
+            # 일반 주석 무시
+            if line.startswith("#"):
+                continue
+            # 간식 파싱
+            snack_match = snack_pattern.match(line)
+            if snack_match:
+                snack_name = snack_match.group(1).strip()
+                quantity = int(snack_match.group(2))
+                unit = snack_match.group(3).strip() or "개"
                 snacks.append((snack_name, quantity, unit))
             else:
                 print(f"  ⚠️  파싱 실패 (무시됨): '{line}'", file=sys.stderr)
-    return snacks
+
+    return display_name, snacks
 
 
 # ---------------------------------------------------------------------------
@@ -268,12 +281,14 @@ def generate_svg(data: dict) -> str:
             f'font-size="18" fill="#8B949E">{_esc(rank_label)}</text>'
         )
 
-        # 사용자명
+        # 사용자명 (한글 이름 있으면 우선, 없으면 @github_id)
+        display = info.get("display_name") or username
+        label_text = display if display != username else f"@{username}"
         lines.append(
             f'<text x="{LEFT - 34}" y="{cx + 5}" text-anchor="end" '
             f'font-family="system-ui,-apple-system,Segoe UI,sans-serif" '
             f'font-size="13" font-weight="600" fill="#E6EDF3">'
-            f'@{_esc(username)}</text>'
+            f'{_esc(label_text)}</text>'
         )
 
         # 막대 배경 (트랙)
@@ -377,9 +392,11 @@ def generate_readme(data: dict) -> str:
     medals = ["🥇", "🥈", "🥉"]
     for rank, (username, info) in enumerate(sorted_list):
         badge = medals[rank] if rank < 3 else f"#{rank + 1}"
+        display = info.get("display_name") or username
+        name_label = f"{display} (@{username})" if display != username else f"@{username}"
         lines = [
             "<details>",
-            f"<summary>{badge} <b>@{username}</b> — {info['total_calories']:,} kcal</summary>",
+            f"<summary>{badge} <b>{name_label}</b> — {info['total_calories']:,} kcal</summary>",
             "",
             "| 간식 | 수량 | 낱개 구성 | 낱개 칼로리 | 합계 |",
             "|------|-----:|:---------:|------------:|-----:|",
@@ -443,13 +460,14 @@ def main() -> None:
         if username.startswith(".") or username == "example":
             continue
 
-        print(f"\n👤 {username}")
-        snacks = parse_contribution_file(txt_file)
+        display_name, snacks = parse_contribution_file(txt_file)
+        label = display_name or username
+        print(f"\n👤 {label} (@{username})")
         if not snacks:
             print("  (항목 없음)")
             continue
 
-        contributor: dict = {"total_calories": 0, "snacks": []}
+        contributor: dict = {"total_calories": 0, "display_name": label, "snacks": []}
         for snack_name, quantity, unit in snacks:
             info = get_calorie_info(snack_name, unit, cache)
             cal_per_unit = info.get("calories_per_unit", 0)
