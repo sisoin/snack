@@ -717,10 +717,10 @@ def generate_readme(data: dict) -> str:
         fun_lines = " &nbsp;|&nbsp; ".join(fun_stats[:4])
         fun_section = f"\n> 🎯 {fun_lines}\n"
 
-    # 상세 내역
+    # 상세 내역 (상위 10명만)
     detail_blocks = []
     medals = ["🥇", "🥈", "🥉"]
-    for rank, (username, info) in enumerate(sorted_list):
+    for rank, (username, info) in enumerate(sorted_list[:10]):
         medal = medals[rank] if rank < 3 else f"#{rank + 1}"
         display = info.get("display_name") or username
         name_label = f"{display} (@{username})" if display != username else f"@{username}"
