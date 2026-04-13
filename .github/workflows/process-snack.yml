@@ -59,4 +59,4 @@ jobs:
           git diff --staged --quiet && echo "변경 없음, 스킵" && exit 0
           git commit -m "🍿 Update snack rankings [skip ci]"
           git pull --rebase origin master
-          git push origin master
+          git push origin HEAD:master
