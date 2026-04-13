@@ -1,0 +1,52 @@
+name: 🍿 Process Snack Contributions
+
+on:
+  # contributions/ 파일이 main에 머지될 때 실행
+  push:
+    branches: [main]
+    paths:
+      - "contributions/**"
+
+  # 수동 실행도 허용 (테스트·재계산용)
+  workflow_dispatch:
+
+jobs:
+  process-snacks:
+    runs-on: ubuntu-latest
+
+    # 봇 커밋이 다시 워크플로를 트리거하는 무한 루프 방지
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # 봇 push를 위해 PAT 또는 기본 토큰 사용
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install openai
+
+      - name: Process snack contributions
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python scripts/process_snack.py
+
+      - name: Commit & push updated README and data
+        run: |
+          git config user.name  "Snack Bot 🍿"
+          git config user.email "snack-bot@users.noreply.github.com"
+          git add data/snacks.json assets/histogram.svg README.md
+          # 변경이 없으면 커밋하지 않음
+          git diff --staged --quiet && echo "변경 없음, 스킵" && exit 0
+          git commit -m "🍿 Update snack rankings [skip ci]"
+          git push
