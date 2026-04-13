@@ -1,8 +1,15 @@
 name: 🍿 Process Snack Contributions
 
 on:
-  # contributions/ 파일이 main에 머지될 때 실행
+  # contributions/ 파일이 직접 push될 때
   push:
+    branches: [main, master]
+    paths:
+      - "contributions/**"
+
+  # PR이 머지될 때
+  pull_request:
+    types: [closed]
     branches: [main, master]
     paths:
       - "contributions/**"
@@ -14,8 +21,11 @@ jobs:
   process-snacks:
     runs-on: ubuntu-latest
 
-    # 봇 커밋이 다시 워크플로를 트리거하는 무한 루프 방지
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    # PR 이벤트면 머지된 경우만 / push면 봇 커밋 제외
+    if: |
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true) ||
+      (github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]')) ||
+      github.event_name == 'workflow_dispatch'
 
     permissions:
       contents: write
