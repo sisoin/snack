@@ -424,13 +424,21 @@ def generate_readme(data: dict) -> str:
 
     details = "\n\n".join(detail_blocks)
 
+    # GitHub Actions 환경이면 raw URL, 로컬이면 상대경로
+    repo = os.environ.get("GITHUB_REPOSITORY", "")
+    branch = os.environ.get("GITHUB_REF_NAME", "master")
+    chart_url = (
+        f"https://raw.githubusercontent.com/{repo}/{branch}/assets/histogram.svg"
+        if repo else "assets/histogram.svg"
+    )
+
     return f"""# 🍿 간식 칼로리 기여 현황
 
 > 총 기여 칼로리: **{total_cal:,} kcal** &nbsp;|&nbsp; 참여자: **{len(contributors)}명**
 
 ## 🏆 랭킹
 
-![histogram](assets/histogram.svg)
+![histogram]({chart_url})
 
 ## 📋 상세 내역
 
