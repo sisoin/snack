@@ -1,20 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="480" height="490" viewBox="0 0 480 490">
   <rect width="480" height="490" fill="#FFFFFF"/>
   <rect width="480" height="490" rx="12" fill="none" stroke="#E8E8E8" stroke-width="1"/>
-  <text x="240" y="30" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#1A1A2E">&#x1F37F; Snack Calorie Rankings</text>
-  <text x="240" y="52" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#999">Total 10,400 kcal &#160;·&#160; 2 contributors &#160;·&#160; 32 snacks</text>
+  <text x="240" y="30" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#1A1A2E">&#x1F37F; 간식 기여도</text>
+  <text x="240" y="52" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#999">총 칼로리 10,400 kcal &#160;·&#160; 참여자 2명 &#160;·&#160; 총 간식 32개</text>
   <line x1="54" y1="360" x2="460" y2="360" stroke="#DDDDDD" stroke-width="1"/>
   <text x="50" y="364" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">0</text>
   <line x1="54" y1="304" x2="460" y2="304" stroke="#EFEFEF" stroke-width="1"/>
-  <text x="50" y="308" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">1k</text>
+  <text x="50" y="308" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">1천</text>
   <line x1="54" y1="248" x2="460" y2="248" stroke="#EFEFEF" stroke-width="1"/>
-  <text x="50" y="252" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">2k</text>
+  <text x="50" y="252" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">2천</text>
   <line x1="54" y1="192" x2="460" y2="192" stroke="#EFEFEF" stroke-width="1"/>
-  <text x="50" y="196" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">4k</text>
+  <text x="50" y="196" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">4천</text>
   <line x1="54" y1="136" x2="460" y2="136" stroke="#EFEFEF" stroke-width="1"/>
-  <text x="50" y="140" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">5k</text>
+  <text x="50" y="140" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">5천</text>
   <line x1="54" y1="80" x2="460" y2="80" stroke="#EFEFEF" stroke-width="1"/>
-  <text x="50" y="84" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">7k</text>
+  <text x="50" y="84" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">7천</text>
   <clipPath id="c0"><rect x="58" y="80" width="90" height="280" rx="5"/></clipPath>
   <rect x="58" y="80" width="90" height="280" rx="5" fill="#F5F5F5"/>
   <g clip-path="url(#c0)">

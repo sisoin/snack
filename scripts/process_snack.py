@@ -273,13 +273,13 @@ def generate_svg(data: dict) -> str:
     lines.append(
         f'<text x="{W // 2}" y="30" text-anchor="middle" '
         f'font-family="{FONT}" font-size="17" font-weight="700" fill="#1A1A2E">'
-        f'&#x1F37F; Snack Calorie Rankings</text>'
+        f'&#x1F37F; 간식 기여도</text>'
     )
     lines.append(
         f'<text x="{W // 2}" y="52" text-anchor="middle" '
         f'font-family="{FONT}" font-size="12" fill="#999">'
-        f'Total {total_cal:,} kcal &#160;·&#160; {n} contributors '
-        f'&#160;·&#160; {total_snack_count:,} snacks</text>'
+        f'총 칼로리 {total_cal:,} kcal &#160;·&#160; 참여자 {n}명 '
+        f'&#160;·&#160; 총 간식 {total_snack_count:,}개</text>'
     )
 
     # ── Y축 격자선 + 레이블 ───────────────────────────────────────
@@ -292,7 +292,7 @@ def generate_svg(data: dict) -> str:
             f'<line x1="{LEFT - 4}" y1="{gy}" x2="{W - RIGHT}" y2="{gy}" '
             f'stroke="{stroke}" stroke-width="1"/>'
         )
-        label = f"{cal_val // 1000}k" if cal_val >= 1000 else str(cal_val)
+        label = f"{cal_val // 1000}천" if cal_val >= 1000 else str(cal_val)
         lines.append(
             f'<text x="{LEFT - 8}" y="{gy + 4}" text-anchor="end" '
             f'font-family="{FONT}" font-size="10" fill="#BBBBBB">{_esc(label)}</text>'
