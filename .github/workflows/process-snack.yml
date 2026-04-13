@@ -32,9 +32,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          # PR 머지 시 PR 브랜치 HEAD가 아닌 실제 merge commit을 체크아웃
-          # → 베이스 브랜치(master)의 최신 snacks.json 캐시 포함
-          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
+          # 항상 master 브랜치를 체크아웃 → detached HEAD 방지
+          # merge commit은 이미 master에 포함되어 있으므로 동일한 내용을 얻음
+          ref: master
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -59,4 +59,4 @@ jobs:
           git diff --staged --quiet && echo "변경 없음, 스킵" && exit 0
           git commit -m "🍿 Update snack rankings [skip ci]"
           git pull --rebase origin master
-          git push origin HEAD:master
+          git push origin master
