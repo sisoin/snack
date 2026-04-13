@@ -1,19 +1,20 @@
 # 🍿 간식 칼로리 기여 현황
 
-> 총 기여 칼로리: **7,200 kcal** &nbsp;|&nbsp; 참여자: **1명**
+> 총 기여 칼로리: **9,600 kcal** &nbsp;|&nbsp; 참여자: **1명**
 
 ## 🏆 랭킹
 
-![histogram](assets/histogram.svg)
+![histogram](https://raw.githubusercontent.com/sisoin/snack/master/assets/histogram.svg)
 
 ## 📋 상세 내역
 
 <details>
-<summary>🥇 <b>배민준 (@sisoin)</b> — 7,200 kcal</summary>
+<summary>🥇 <b>배민준 (@sisoin)</b> — 9,600 kcal</summary>
 
 | 간식 | 수량 | 낱개 구성 | 낱개 칼로리 | 합계 |
 |------|-----:|:---------:|------------:|-----:|
 | 새우깡 | 15봉지 | 1봉지 (총 15봉지) | 480 kcal/봉지 | **7,200 kcal** |
+| 새우깡 | 5봉지 | 1봉지 (총 5봉지) | 480 kcal/봉지 | **2,400 kcal** |
 
 </details>
 

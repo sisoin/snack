@@ -1,7 +1,7 @@
 {
   "contributors": {
     "sisoin": {
-      "total_calories": 7200,
+      "total_calories": 9600,
       "display_name": "배민준",
       "snacks": [
         {
@@ -13,6 +13,16 @@
           "calories_per_unit": 480,
           "calories_per_individual": 480,
           "total_calories": 7200
+        },
+        {
+          "name": "새우깡",
+          "quantity": 5,
+          "unit": "봉지",
+          "count_per_unit": 1,
+          "individual_unit": "봉지",
+          "calories_per_unit": 480,
+          "calories_per_individual": 480,
+          "total_calories": 2400
         }
       ]
     }
