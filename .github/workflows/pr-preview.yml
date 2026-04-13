@@ -1,0 +1,80 @@
+name: 🍿 PR Snack Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "contributions/**"
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Generate preview comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # PR에서 변경된 contributions 파일 목록
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'contributions/*.txt' 2>/dev/null || echo "")
+
+          if [ -z "$CHANGED" ]; then
+            echo "변경된 기여 파일 없음"
+            exit 0
+          fi
+
+          COMMENT="## 🍿 간식 기여 미리보기\n\n"
+          COMMENT+="이 PR에 포함된 간식 목록입니다:\n\n"
+
+          for FILE in $CHANGED; do
+            if [ ! -f "$FILE" ]; then
+              continue
+            fi
+            USERNAME=$(basename "$FILE" .txt)
+            if [ "$USERNAME" = "example" ]; then
+              continue
+            fi
+
+            # 표시 이름 추출
+            DISPLAY=$(grep -oP '^#\s*이름\s*[:：]\s*\K.+' "$FILE" 2>/dev/null || echo "$USERNAME")
+
+            COMMENT+="### 👤 ${DISPLAY} (\`@${USERNAME}\`)\n\n"
+            COMMENT+="| 간식 | 수량 |\n"
+            COMMENT+="|------|------|\n"
+
+            # 간식 항목 파싱 (주석/빈줄 제외)
+            while IFS= read -r line; do
+              line=$(echo "$line" | xargs)
+              [ -z "$line" ] && continue
+              echo "$line" | grep -q '^#' && continue
+              COMMENT+="| ${line} | |\n"
+            done < "$FILE"
+
+            COMMENT+="\n"
+          done
+
+          COMMENT+="> 🤖 PR이 머지되면 OpenAI가 자동으로 칼로리를 계산하고 랭킹을 업데이트합니다!\n"
+
+          # 기존 봇 코멘트 삭제 후 새로 작성
+          PR_NUM=${{ github.event.pull_request.number }}
+          EXISTING=$(gh api repos/${{ github.repository }}/issues/${PR_NUM}/comments \
+            --jq '.[] | select(.body | contains("간식 기여 미리보기")) | .id' 2>/dev/null || echo "")
+
+          for CID in $EXISTING; do
+            gh api repos/${{ github.repository }}/issues/comments/${CID} -X DELETE 2>/dev/null || true
+          done
+
+          printf "$COMMENT" | gh pr comment ${PR_NUM} --body-file -
