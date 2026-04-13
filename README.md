@@ -6,15 +6,147 @@
 
 ## 🏆 랭킹
 
-![histogram](assets/histogram.svg)
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="468" viewBox="0 0 480 468">
+  <style>
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #1A1A2E !important; }
+    .border { stroke: #333 !important; }
+    .title { fill: #E8E8E8 !important; }
+    .subtitle { fill: #888 !important; }
+    .grid { stroke: #333 !important; }
+    .grid-base { stroke: #444 !important; }
+    .axis-label { fill: #666 !important; }
+    .bar-bg { fill: #2A2A3E !important; }
+    .rank-label { fill: #CCC !important; }
+    .cal-label { fill: #DDD !important; }
+    .name-label { fill: #E8E8E8 !important; }
+    .name-sub { fill: #666 !important; }
+    .legend-text { fill: #AAA !important; }
+    .inv-row-alt { fill: #16213E !important; }
+    .inv-name { fill: #E8E8E8 !important; }
+    .inv-sub { fill: #666 !important; }
+    .inv-bar-bg { fill: #333 !important; }
+    .inv-pct { fill: #888 !important; }
+  }
+</style>
+  <rect class="bg" width="480" height="468" fill="#FFFFFF"/>
+  <rect class="border" width="480" height="468" rx="12" fill="none" stroke="#E8E8E8" stroke-width="1"/>
+  <text class="title" x="240" y="30" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#1A1A2E">&#x1F37F; 간식 기여도</text>
+  <text class="subtitle" x="240" y="52" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#999">총 칼로리 9,600 kcal · 참여자 1명 · 총 간식 20개</text>
+  <line class="grid-base" x1="54" y1="360" x2="460" y2="360" stroke="#DDDDDD" stroke-width="1"/>
+  <text class="axis-label" x="50" y="364" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">0</text>
+  <line class="grid" x1="54" y1="304" x2="460" y2="304" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="308" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">1.9천</text>
+  <line class="grid" x1="54" y1="248" x2="460" y2="248" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="252" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">3.8천</text>
+  <line class="grid" x1="54" y1="192" x2="460" y2="192" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="196" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">5.8천</text>
+  <line class="grid" x1="54" y1="136" x2="460" y2="136" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="140" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">7.7천</text>
+  <line class="grid" x1="54" y1="80" x2="460" y2="80" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="84" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">9.6천</text>
+  <clipPath id="c0"><rect x="58" y="80" width="90" height="280" rx="5"/></clipPath>
+  <rect class="bar-bg" x="58" y="80" width="90" height="280" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c0)">
+    <rect x="58" y="80" width="90" height="280" fill="#FF6B6B"/>
+  </g>
+  <text class="rank-label" x="103" y="60" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">🥇</text>
+  <text class="cal-label" x="103" y="74" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">9,600</text>
+  <text class="name-label" x="103" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">배민준</text>
+  <text class="name-sub" x="103" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@sisoin</text>
+  <rect x="58" y="414" width="11" height="11" rx="3" fill="#FF6B6B"/>
+  <text class="legend-text" x="73" y="423" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">새우깡</text>
+</svg>
 
 ## 🍽️ 섭취 칼로리 랭킹
 
-![consumed](assets/consumed.svg)
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="468" viewBox="0 0 480 468">
+  <style>
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #1A1A2E !important; }
+    .border { stroke: #333 !important; }
+    .title { fill: #E8E8E8 !important; }
+    .subtitle { fill: #888 !important; }
+    .grid { stroke: #333 !important; }
+    .grid-base { stroke: #444 !important; }
+    .axis-label { fill: #666 !important; }
+    .bar-bg { fill: #2A2A3E !important; }
+    .rank-label { fill: #CCC !important; }
+    .cal-label { fill: #DDD !important; }
+    .name-label { fill: #E8E8E8 !important; }
+    .name-sub { fill: #666 !important; }
+    .legend-text { fill: #AAA !important; }
+    .inv-row-alt { fill: #16213E !important; }
+    .inv-name { fill: #E8E8E8 !important; }
+    .inv-sub { fill: #666 !important; }
+    .inv-bar-bg { fill: #333 !important; }
+    .inv-pct { fill: #888 !important; }
+  }
+</style>
+  <rect class="bg" width="480" height="468" fill="#FFFFFF"/>
+  <rect class="border" width="480" height="468" rx="12" fill="none" stroke="#E8E8E8" stroke-width="1"/>
+  <text class="title" x="240" y="30" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#1A1A2E">&#x1F374; 섭취 칼로리 랭킹</text>
+  <text class="subtitle" x="240" y="52" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#999">총 섭취 칼로리 1,440 kcal · 참여자 1명</text>
+  <line class="grid-base" x1="54" y1="360" x2="460" y2="360" stroke="#DDDDDD" stroke-width="1"/>
+  <text class="axis-label" x="50" y="364" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">0</text>
+  <line class="grid" x1="54" y1="304" x2="460" y2="304" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="308" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">288</text>
+  <line class="grid" x1="54" y1="248" x2="460" y2="248" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="252" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">576</text>
+  <line class="grid" x1="54" y1="192" x2="460" y2="192" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="196" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">864</text>
+  <line class="grid" x1="54" y1="136" x2="460" y2="136" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="140" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">1.2천</text>
+  <line class="grid" x1="54" y1="80" x2="460" y2="80" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="84" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">1.4천</text>
+  <clipPath id="c0"><rect x="58" y="80" width="90" height="280" rx="5"/></clipPath>
+  <rect class="bar-bg" x="58" y="80" width="90" height="280" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c0)">
+    <rect x="58" y="80" width="90" height="280" fill="#FF6B6B"/>
+  </g>
+  <text class="rank-label" x="103" y="60" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">🥇</text>
+  <text class="cal-label" x="103" y="74" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">1,440</text>
+  <text class="name-label" x="103" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">배민준</text>
+  <text class="name-sub" x="103" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@sisoin</text>
+  <rect x="58" y="414" width="11" height="11" rx="3" fill="#FF6B6B"/>
+  <text class="legend-text" x="73" y="423" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">새우깡</text>
+</svg>
 
 ## 🏪 탕비실 현황
 
-![inventory](assets/inventory.svg)
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="142" viewBox="0 0 480 142">
+  <style>
+  @media (prefers-color-scheme: dark) {
+    .bg { fill: #1A1A2E !important; }
+    .border { stroke: #333 !important; }
+    .title { fill: #E8E8E8 !important; }
+    .subtitle { fill: #888 !important; }
+    .grid { stroke: #333 !important; }
+    .grid-base { stroke: #444 !important; }
+    .axis-label { fill: #666 !important; }
+    .bar-bg { fill: #2A2A3E !important; }
+    .rank-label { fill: #CCC !important; }
+    .cal-label { fill: #DDD !important; }
+    .name-label { fill: #E8E8E8 !important; }
+    .name-sub { fill: #666 !important; }
+    .legend-text { fill: #AAA !important; }
+    .inv-row-alt { fill: #16213E !important; }
+    .inv-name { fill: #E8E8E8 !important; }
+    .inv-sub { fill: #666 !important; }
+    .inv-bar-bg { fill: #333 !important; }
+    .inv-pct { fill: #888 !important; }
+  }
+</style>
+  <rect class="bg" width="480" height="142" fill="#FFFFFF"/>
+  <rect class="border" width="480" height="142" rx="12" fill="none" stroke="#E8E8E8" stroke-width="1"/>
+  <text class="title" x="240" y="30" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#1A1A2E">&#x1F3EA; 탕비실 현황</text>
+  <text class="subtitle" x="240" y="52" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#999">총 17개 남음 &#160;·&#160; 총 20개 기여</text>
+  <text class="inv-name" x="24" y="95" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" font-weight="700" fill="#222">새우깡</text>
+  <text class="inv-sub" x="24" y="112" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#AAAAAA">17/20봉지 &#160;·&#160; 3개 섭취</text>
+  <rect class="inv-bar-bg" x="200" y="92" width="216" height="12" rx="6" fill="#EEEEEE"/>
+  <rect x="200" y="92" width="184" height="12" rx="6" fill="#6BCB77"/>
+  <text class="inv-pct" x="422" y="102" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#999">85%</text>
+</svg>
 
 ## 📋 상세 내역
 
