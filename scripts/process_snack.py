@@ -171,13 +171,12 @@ def get_calorie_info(snack_name: str, unit: str, cache: dict) -> dict:
 
     except Exception as e:
         print(f"  ❌ OpenAI 오류 ({snack_name} {unit}): {e}", file=sys.stderr)
-        fallback = {
+        # 실패 결과는 캐시하지 않음 → 다음 실행 때 재시도
+        return {
             "calories_per_unit": 0, "unit": unit,
             "count_per_unit": 1, "individual_unit": "개",
             "calories_per_individual": 0,
         }
-        cache[cache_key] = fallback
-        return fallback
 
 
 # ---------------------------------------------------------------------------
@@ -535,6 +534,9 @@ def main() -> None:
         for snack_name, quantity, unit in snacks:
             info = get_calorie_info(snack_name, unit, cache)
             cal_per_unit = info.get("calories_per_unit", 0)
+            if cal_per_unit == 0:
+                print(f"  ⚠️  칼로리 0 — 건너뜀 (다음 실행 때 재시도): {snack_name} {unit}", file=sys.stderr)
+                continue
             total = cal_per_unit * quantity
             contributor["snacks"].append(
                 {

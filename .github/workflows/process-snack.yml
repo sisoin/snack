@@ -31,8 +31,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # 봇 push를 위해 PAT 또는 기본 토큰 사용
           token: ${{ secrets.GITHUB_TOKEN }}
+          # PR 머지 시 PR 브랜치 HEAD가 아닌 실제 merge commit을 체크아웃
+          # → 베이스 브랜치(master)의 최신 snacks.json 캐시 포함
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
