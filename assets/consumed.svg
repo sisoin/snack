@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="480" height="468" viewBox="0 0 480 468">
+<svg xmlns="http://www.w3.org/2000/svg" width="1572" height="754" viewBox="0 0 1572 754">
   <style>
   @media (prefers-color-scheme: dark) {
     .bg { fill: #1A1A2E !important; }
@@ -21,31 +21,356 @@
     .inv-pct { fill: #888 !important; }
   }
 </style>
-  <rect class="bg" width="480" height="468" fill="#FFFFFF"/>
-  <rect class="border" width="480" height="468" rx="12" fill="none" stroke="#E8E8E8" stroke-width="1"/>
-  <text class="title" x="240" y="30" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#1A1A2E">&#x1F374; 섭취 칼로리 랭킹</text>
-  <text class="subtitle" x="240" y="52" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#999">총 섭취 칼로리 1,440 kcal · 참여자 1명</text>
-  <line class="grid-base" x1="54" y1="360" x2="460" y2="360" stroke="#DDDDDD" stroke-width="1"/>
+  <rect class="bg" width="1572" height="754" fill="#FFFFFF"/>
+  <rect class="border" width="1572" height="754" rx="12" fill="none" stroke="#E8E8E8" stroke-width="1"/>
+  <text class="title" x="786" y="30" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#1A1A2E">&#x1F374; 섭취 칼로리 랭킹</text>
+  <text class="subtitle" x="786" y="52" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#999">총 섭취 칼로리 24,880 kcal · 참여자 26명</text>
+  <line class="grid-base" x1="54" y1="360" x2="1552" y2="360" stroke="#DDDDDD" stroke-width="1"/>
   <text class="axis-label" x="50" y="364" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">0</text>
-  <line class="grid" x1="54" y1="304" x2="460" y2="304" stroke="#EFEFEF" stroke-width="1"/>
-  <text class="axis-label" x="50" y="308" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">288</text>
-  <line class="grid" x1="54" y1="248" x2="460" y2="248" stroke="#EFEFEF" stroke-width="1"/>
-  <text class="axis-label" x="50" y="252" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">576</text>
-  <line class="grid" x1="54" y1="192" x2="460" y2="192" stroke="#EFEFEF" stroke-width="1"/>
-  <text class="axis-label" x="50" y="196" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">864</text>
-  <line class="grid" x1="54" y1="136" x2="460" y2="136" stroke="#EFEFEF" stroke-width="1"/>
-  <text class="axis-label" x="50" y="140" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">1.2천</text>
-  <line class="grid" x1="54" y1="80" x2="460" y2="80" stroke="#EFEFEF" stroke-width="1"/>
-  <text class="axis-label" x="50" y="84" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">1.4천</text>
-  <clipPath id="c0"><rect x="58" y="80" width="90" height="280" rx="5"/></clipPath>
-  <rect class="bar-bg" x="58" y="80" width="90" height="280" rx="5" fill="#F5F5F5"/>
+  <line class="grid" x1="54" y1="304" x2="1552" y2="304" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="308" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">852</text>
+  <line class="grid" x1="54" y1="248" x2="1552" y2="248" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="252" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">1.7천</text>
+  <line class="grid" x1="54" y1="192" x2="1552" y2="192" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="196" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">2.6천</text>
+  <line class="grid" x1="54" y1="136" x2="1552" y2="136" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="140" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">3.4천</text>
+  <line class="grid" x1="54" y1="80" x2="1552" y2="80" stroke="#EFEFEF" stroke-width="1"/>
+  <text class="axis-label" x="50" y="84" text-anchor="end" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">4.3천</text>
+  <clipPath id="c0"><rect x="58" y="80" width="44" height="280" rx="5"/></clipPath>
+  <rect class="bar-bg" x="58" y="80" width="44" height="280" rx="5" fill="#F5F5F5"/>
   <g clip-path="url(#c0)">
-    <rect x="58" y="80" width="90" height="280" fill="#FF6B6B"/>
+    <rect x="58" y="278" width="44" height="82" fill="#4D96FF"/>
+    <rect x="58" y="215" width="44" height="63" fill="#6BCB77"/>
+    <rect x="58" y="110" width="44" height="105" fill="#FFD93D"/>
+    <rect x="58" y="80" width="44" height="30" fill="#FF6B6B"/>
   </g>
-  <text class="rank-label" x="103" y="60" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">🥇</text>
-  <text class="cal-label" x="103" y="74" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">1,440</text>
-  <text class="name-label" x="103" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">배민준</text>
-  <text class="name-sub" x="103" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@sisoin</text>
+  <text class="rank-label" x="80" y="60" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">🥇</text>
+  <text class="cal-label" x="80" y="74" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">4,260</text>
+  <text class="name-label" x="80" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">김경록</text>
+  <text class="name-sub" x="80" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@kimgyeongrok</text>
+  <clipPath id="c1"><rect x="116" y="140" width="44" height="220" rx="5"/></clipPath>
+  <rect class="bar-bg" x="116" y="140" width="44" height="220" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c1)">
+    <rect x="116" y="332" width="44" height="28" fill="#FF9F43"/>
+    <rect x="116" y="298" width="44" height="34" fill="#A57BDB"/>
+    <rect x="116" y="140" width="44" height="158" fill="#6BCB77"/>
+  </g>
+  <text class="rank-label" x="138" y="120" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">🥈</text>
+  <text class="cal-label" x="138" y="134" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">3,340</text>
+  <text class="name-label" x="138" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">박동민</text>
+  <text class="name-sub" x="138" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@parkdongmin</text>
+  <clipPath id="c2"><rect x="174" y="147" width="44" height="213" rx="5"/></clipPath>
+  <rect class="bar-bg" x="174" y="147" width="44" height="213" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c2)">
+    <rect x="174" y="305" width="44" height="55" fill="#FF9F43"/>
+    <rect x="174" y="273" width="44" height="32" fill="#F06595"/>
+    <rect x="174" y="147" width="44" height="126" fill="#38D9A9"/>
+  </g>
+  <text class="rank-label" x="196" y="127" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">🥉</text>
+  <text class="cal-label" x="196" y="141" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">3,240</text>
+  <text class="name-label" x="196" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">정재환</text>
+  <text class="name-sub" x="196" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@jeongjehwan</text>
+  <clipPath id="c3"><rect x="232" y="244" width="44" height="116" rx="5"/></clipPath>
+  <rect class="bar-bg" x="232" y="244" width="44" height="116" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c3)">
+    <rect x="232" y="328" width="44" height="32" fill="#E17055"/>
+    <rect x="232" y="291" width="44" height="37" fill="#FDCB6E"/>
+    <rect x="232" y="244" width="44" height="47" fill="#74B9FF"/>
+  </g>
+  <text class="rank-label" x="254" y="224" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#4</text>
+  <text class="cal-label" x="254" y="238" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">1,760</text>
+  <text class="name-label" x="254" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">한준교</text>
+  <text class="name-sub" x="254" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@hanjungyo</text>
+  <clipPath id="c4"><rect x="290" y="265" width="44" height="95" rx="5"/></clipPath>
+  <rect class="bar-bg" x="290" y="265" width="44" height="95" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c4)">
+    <rect x="290" y="265" width="44" height="95" fill="#6BCB77"/>
+  </g>
+  <text class="rank-label" x="312" y="245" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#5</text>
+  <text class="cal-label" x="312" y="259" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">1,440</text>
+  <text class="name-label" x="312" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">배민준</text>
+  <text class="name-sub" x="312" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@sisoin</text>
+  <clipPath id="c5"><rect x="348" y="301" width="44" height="59" rx="5"/></clipPath>
+  <rect class="bar-bg" x="348" y="301" width="44" height="59" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c5)">
+    <rect x="348" y="350" width="44" height="10" fill="#00CEC9"/>
+    <rect x="348" y="301" width="44" height="49" fill="#4D96FF"/>
+  </g>
+  <text class="rank-label" x="370" y="281" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#6</text>
+  <text class="cal-label" x="370" y="295" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">900</text>
+  <text class="name-label" x="370" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">배민</text>
+  <text class="name-sub" x="370" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@baemin</text>
+  <clipPath id="c6"><rect x="406" y="308" width="44" height="52" rx="5"/></clipPath>
+  <rect class="bar-bg" x="406" y="308" width="44" height="52" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c6)">
+    <rect x="406" y="334" width="44" height="26" fill="#FD79A8"/>
+    <rect x="406" y="308" width="44" height="26" fill="#6C5CE7"/>
+  </g>
+  <text class="rank-label" x="428" y="288" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#7</text>
+  <text class="cal-label" x="428" y="302" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">790</text>
+  <text class="name-label" x="428" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">이준수</text>
+  <text class="name-sub" x="428" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@leejunsu</text>
+  <clipPath id="c7"><rect x="464" y="309" width="44" height="51" rx="5"/></clipPath>
+  <rect class="bar-bg" x="464" y="309" width="44" height="51" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c7)">
+    <rect x="464" y="340" width="44" height="20" fill="#FF6B6B"/>
+    <rect x="464" y="308" width="44" height="32" fill="#B2BEC3"/>
+  </g>
+  <text class="rank-label" x="486" y="289" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#8</text>
+  <text class="cal-label" x="486" y="303" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">780</text>
+  <text class="name-label" x="486" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">임진영</text>
+  <text class="name-sub" x="486" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@imjinyeong</text>
+  <clipPath id="c8"><rect x="522" y="311" width="44" height="49" rx="5"/></clipPath>
+  <rect class="bar-bg" x="522" y="311" width="44" height="49" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c8)">
+    <rect x="522" y="350" width="44" height="10" fill="#6BCB77"/>
+    <rect x="522" y="311" width="44" height="39" fill="#FFD93D"/>
+  </g>
+  <text class="rank-label" x="544" y="291" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#9</text>
+  <text class="cal-label" x="544" y="305" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">750</text>
+  <text class="name-label" x="544" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">정찬혁</text>
+  <text class="name-sub" x="544" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@jeongchanhyeok</text>
+  <clipPath id="c9"><rect x="580" y="313" width="44" height="47" rx="5"/></clipPath>
+  <rect class="bar-bg" x="580" y="313" width="44" height="47" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c9)">
+    <rect x="580" y="344" width="44" height="16" fill="#A57BDB"/>
+    <rect x="580" y="312" width="44" height="32" fill="#4D96FF"/>
+  </g>
+  <text class="rank-label" x="602" y="293" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#10</text>
+  <text class="cal-label" x="602" y="307" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">720</text>
+  <text class="name-label" x="602" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">최재민</text>
+  <text class="name-sub" x="602" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@choijaemin</text>
+  <clipPath id="c10"><rect x="638" y="313" width="44" height="47" rx="5"/></clipPath>
+  <rect class="bar-bg" x="638" y="313" width="44" height="47" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c10)">
+    <rect x="638" y="313" width="44" height="47" fill="#FF9F43"/>
+  </g>
+  <text class="rank-label" x="660" y="293" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#11</text>
+  <text class="cal-label" x="660" y="307" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">720</text>
+  <text class="name-label" x="660" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">이주원</text>
+  <text class="name-sub" x="660" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@leejuwon</text>
+  <clipPath id="c11"><rect x="696" y="315" width="44" height="45" rx="5"/></clipPath>
+  <rect class="bar-bg" x="696" y="315" width="44" height="45" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c11)">
+    <rect x="696" y="347" width="44" height="13" fill="#F06595"/>
+    <rect x="696" y="315" width="44" height="32" fill="#38D9A9"/>
+  </g>
+  <text class="rank-label" x="718" y="295" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#12</text>
+  <text class="cal-label" x="718" y="309" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">680</text>
+  <text class="name-label" x="718" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">이채연</text>
+  <text class="name-sub" x="718" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@leechaeyeon</text>
+  <clipPath id="c12"><rect x="754" y="316" width="44" height="44" rx="5"/></clipPath>
+  <rect class="bar-bg" x="754" y="316" width="44" height="44" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c12)">
+    <rect x="754" y="342" width="44" height="18" fill="#FF9F43"/>
+    <rect x="754" y="316" width="44" height="26" fill="#A57BDB"/>
+  </g>
+  <text class="rank-label" x="776" y="296" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#13</text>
+  <text class="cal-label" x="776" y="310" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">670</text>
+  <text class="name-label" x="776" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">임수현</text>
+  <text class="name-sub" x="776" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@imsuhyeon</text>
+  <clipPath id="c13"><rect x="812" y="317" width="44" height="43" rx="5"/></clipPath>
+  <rect class="bar-bg" x="812" y="317" width="44" height="43" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c13)">
+    <rect x="812" y="340" width="44" height="20" fill="#FDCB6E"/>
+    <rect x="812" y="316" width="44" height="24" fill="#74B9FF"/>
+  </g>
+  <text class="rank-label" x="834" y="297" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#14</text>
+  <text class="cal-label" x="834" y="311" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">660</text>
+  <text class="name-label" x="834" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">김유빈</text>
+  <text class="name-sub" x="834" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@kimyubin</text>
+  <clipPath id="c14"><rect x="870" y="319" width="44" height="41" rx="5"/></clipPath>
+  <rect class="bar-bg" x="870" y="319" width="44" height="41" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c14)">
+    <rect x="870" y="350" width="44" height="10" fill="#00CEC9"/>
+    <rect x="870" y="318" width="44" height="32" fill="#E17055"/>
+  </g>
+  <text class="rank-label" x="892" y="299" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#15</text>
+  <text class="cal-label" x="892" y="313" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">630</text>
+  <text class="name-label" x="892" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">권세빈</text>
+  <text class="name-sub" x="892" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@gwonsebin</text>
+  <clipPath id="c15"><rect x="928" y="319" width="44" height="41" rx="5"/></clipPath>
+  <rect class="bar-bg" x="928" y="319" width="44" height="41" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c15)">
+    <rect x="928" y="351" width="44" height="9" fill="#FD79A8"/>
+    <rect x="928" y="319" width="44" height="32" fill="#6C5CE7"/>
+  </g>
+  <text class="rank-label" x="950" y="299" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#16</text>
+  <text class="cal-label" x="950" y="313" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">620</text>
+  <text class="name-label" x="950" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">백강민</text>
+  <text class="name-sub" x="950" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@baekgangmin</text>
+  <clipPath id="c16"><rect x="986" y="321" width="44" height="39" rx="5"/></clipPath>
+  <rect class="bar-bg" x="986" y="321" width="44" height="39" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c16)">
+    <rect x="986" y="352" width="44" height="8" fill="#FF6B6B"/>
+    <rect x="986" y="320" width="44" height="32" fill="#B2BEC3"/>
+  </g>
+  <text class="rank-label" x="1008" y="301" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#17</text>
+  <text class="cal-label" x="1008" y="315" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">600</text>
+  <text class="name-label" x="1008" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">이성민</text>
+  <text class="name-sub" x="1008" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@leesungmin</text>
+  <clipPath id="c17"><rect x="1044" y="331" width="44" height="29" rx="5"/></clipPath>
+  <rect class="bar-bg" x="1044" y="331" width="44" height="29" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c17)">
+    <rect x="1044" y="351" width="44" height="9" fill="#6BCB77"/>
+    <rect x="1044" y="331" width="44" height="20" fill="#FFD93D"/>
+  </g>
+  <text class="rank-label" x="1066" y="311" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#18</text>
+  <text class="cal-label" x="1066" y="325" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">440</text>
+  <text class="name-label" x="1066" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">김현문</text>
+  <text class="name-sub" x="1066" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@kimhyeonmun</text>
+  <clipPath id="c18"><rect x="1102" y="335" width="44" height="25" rx="5"/></clipPath>
+  <rect class="bar-bg" x="1102" y="335" width="44" height="25" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c18)">
+    <rect x="1102" y="351" width="44" height="9" fill="#4D96FF"/>
+    <rect x="1102" y="335" width="44" height="16" fill="#F06595"/>
+  </g>
+  <text class="rank-label" x="1124" y="315" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#19</text>
+  <text class="cal-label" x="1124" y="329" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">380</text>
+  <text class="name-label" x="1124" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">김준서</text>
+  <text class="name-sub" x="1124" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@kimjunseo</text>
+  <clipPath id="c19"><rect x="1160" y="340" width="44" height="20" rx="5"/></clipPath>
+  <rect class="bar-bg" x="1160" y="340" width="44" height="20" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c19)">
+    <rect x="1160" y="340" width="44" height="20" fill="#A57BDB"/>
+  </g>
+  <text class="rank-label" x="1182" y="320" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#20</text>
+  <text class="cal-label" x="1182" y="334" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">300</text>
+  <text class="name-label" x="1182" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">장효빈</text>
+  <text class="name-sub" x="1182" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@janghyobin</text>
+  <clipPath id="c20"><rect x="1218" y="344" width="44" height="16" rx="5"/></clipPath>
+  <rect class="bar-bg" x="1218" y="344" width="44" height="16" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c20)">
+    <rect x="1218" y="344" width="44" height="16" fill="#FF9F43"/>
+  </g>
+  <text class="rank-label" x="1240" y="324" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#21</text>
+  <text class="cal-label" x="1240" y="338" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">240</text>
+  <text class="name-label" x="1240" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">장재훈</text>
+  <text class="name-sub" x="1240" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@jangjaehun</text>
+  <clipPath id="c21"><rect x="1276" y="344" width="44" height="16" rx="5"/></clipPath>
+  <rect class="bar-bg" x="1276" y="344" width="44" height="16" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c21)">
+    <rect x="1276" y="344" width="44" height="16" fill="#E17055"/>
+  </g>
+  <text class="rank-label" x="1298" y="324" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#22</text>
+  <text class="cal-label" x="1298" y="338" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">240</text>
+  <text class="name-label" x="1298" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">김연수</text>
+  <text class="name-sub" x="1298" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@kimyeonsu</text>
+  <clipPath id="c22"><rect x="1334" y="344" width="44" height="16" rx="5"/></clipPath>
+  <rect class="bar-bg" x="1334" y="344" width="44" height="16" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c22)">
+    <rect x="1334" y="344" width="44" height="16" fill="#38D9A9"/>
+  </g>
+  <text class="rank-label" x="1356" y="324" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#23</text>
+  <text class="cal-label" x="1356" y="338" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">240</text>
+  <text class="name-label" x="1356" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">민지홍</text>
+  <text class="name-sub" x="1356" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@minjihong</text>
+  <clipPath id="c23"><rect x="1392" y="346" width="44" height="14" rx="5"/></clipPath>
+  <rect class="bar-bg" x="1392" y="346" width="44" height="14" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c23)">
+    <rect x="1392" y="346" width="44" height="14" fill="#F06595"/>
+  </g>
+  <text class="rank-label" x="1414" y="326" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#24</text>
+  <text class="cal-label" x="1414" y="340" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">220</text>
+  <text class="name-label" x="1414" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">양정우</text>
+  <text class="name-sub" x="1414" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@yangjeongwoo</text>
+  <clipPath id="c24"><rect x="1450" y="349" width="44" height="11" rx="5"/></clipPath>
+  <rect class="bar-bg" x="1450" y="349" width="44" height="11" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c24)">
+    <rect x="1450" y="349" width="44" height="11" fill="#74B9FF"/>
+  </g>
+  <text class="rank-label" x="1472" y="329" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#25</text>
+  <text class="cal-label" x="1472" y="343" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">160</text>
+  <text class="name-label" x="1472" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">임세하</text>
+  <text class="name-sub" x="1472" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@imseha</text>
+  <clipPath id="c25"><rect x="1508" y="353" width="44" height="7" rx="5"/></clipPath>
+  <rect class="bar-bg" x="1508" y="353" width="44" height="7" rx="5" fill="#F5F5F5"/>
+  <g clip-path="url(#c25)">
+    <rect x="1508" y="353" width="44" height="7" fill="#FDCB6E"/>
+  </g>
+  <text class="rank-label" x="1530" y="333" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="16" fill="#555">#26</text>
+  <text class="cal-label" x="1530" y="347" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" font-weight="600" fill="#444">100</text>
+  <text class="name-label" x="1530" y="378" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" font-weight="700" fill="#333">최우석</text>
+  <text class="name-sub" x="1530" y="392" text-anchor="middle" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="10" fill="#BBBBBB">@choiwooseok</text>
   <rect x="58" y="414" width="11" height="11" rx="3" fill="#FF6B6B"/>
-  <text class="legend-text" x="73" y="423" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">새우깡</text>
+  <text class="legend-text" x="73" y="423" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">프링글스</text>
+  <rect x="556" y="414" width="11" height="11" rx="3" fill="#FFD93D"/>
+  <text class="legend-text" x="571" y="423" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">몬스터에너지</text>
+  <rect x="1054" y="414" width="11" height="11" rx="3" fill="#6BCB77"/>
+  <text class="legend-text" x="1069" y="423" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">새우깡</text>
+  <rect x="58" y="436" width="11" height="11" rx="3" fill="#4D96FF"/>
+  <text class="legend-text" x="73" y="445" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">스니커즈</text>
+  <rect x="556" y="436" width="11" height="11" rx="3" fill="#A57BDB"/>
+  <text class="legend-text" x="571" y="445" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">초코파이</text>
+  <rect x="1054" y="436" width="11" height="11" rx="3" fill="#FF9F43"/>
+  <text class="legend-text" x="1069" y="445" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">콜라</text>
+  <rect x="58" y="458" width="11" height="11" rx="3" fill="#38D9A9"/>
+  <text class="legend-text" x="73" y="467" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">양파링</text>
+  <rect x="556" y="458" width="11" height="11" rx="3" fill="#F06595"/>
+  <text class="legend-text" x="571" y="467" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">포카칩</text>
+  <rect x="1054" y="458" width="11" height="11" rx="3" fill="#74B9FF"/>
+  <text class="legend-text" x="1069" y="467" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">칸쵸</text>
+  <rect x="58" y="480" width="11" height="11" rx="3" fill="#FDCB6E"/>
+  <text class="legend-text" x="73" y="489" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">환타</text>
+  <rect x="556" y="480" width="11" height="11" rx="3" fill="#E17055"/>
+  <text class="legend-text" x="571" y="489" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">허니버터칩</text>
+  <rect x="1054" y="480" width="11" height="11" rx="3" fill="#00CEC9"/>
+  <text class="legend-text" x="1069" y="489" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">핫초코</text>
+  <rect x="58" y="502" width="11" height="11" rx="3" fill="#6C5CE7"/>
+  <text class="legend-text" x="73" y="511" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">버터와플</text>
+  <rect x="556" y="502" width="11" height="11" rx="3" fill="#FD79A8"/>
+  <text class="legend-text" x="571" y="511" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">바나나우유</text>
+  <rect x="1054" y="502" width="11" height="11" rx="3" fill="#B2BEC3"/>
+  <text class="legend-text" x="1069" y="511" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">에이스</text>
+  <rect x="58" y="524" width="11" height="11" rx="3" fill="#FF6B6B"/>
+  <text class="legend-text" x="73" y="533" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">카페라떼</text>
+  <rect x="556" y="524" width="11" height="11" rx="3" fill="#FFD93D"/>
+  <text class="legend-text" x="571" y="533" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">감자깡</text>
+  <rect x="1054" y="524" width="11" height="11" rx="3" fill="#6BCB77"/>
+  <text class="legend-text" x="1069" y="533" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">웰치스</text>
+  <rect x="58" y="546" width="11" height="11" rx="3" fill="#4D96FF"/>
+  <text class="legend-text" x="73" y="555" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">오레오</text>
+  <rect x="556" y="546" width="11" height="11" rx="3" fill="#A57BDB"/>
+  <text class="legend-text" x="571" y="555" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">초코우유</text>
+  <rect x="1054" y="546" width="11" height="11" rx="3" fill="#FF9F43"/>
+  <text class="legend-text" x="1069" y="555" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">홈런볼</text>
+  <rect x="58" y="568" width="11" height="11" rx="3" fill="#38D9A9"/>
+  <text class="legend-text" x="73" y="577" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">마가렛트</text>
+  <rect x="556" y="568" width="11" height="11" rx="3" fill="#F06595"/>
+  <text class="legend-text" x="571" y="577" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">요구르트</text>
+  <rect x="1054" y="568" width="11" height="11" rx="3" fill="#74B9FF"/>
+  <text class="legend-text" x="1069" y="577" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">고래밥</text>
+  <rect x="58" y="590" width="11" height="11" rx="3" fill="#FDCB6E"/>
+  <text class="legend-text" x="73" y="599" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">비타500</text>
+  <rect x="556" y="590" width="11" height="11" rx="3" fill="#E17055"/>
+  <text class="legend-text" x="571" y="599" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">칙촉</text>
+  <rect x="1054" y="590" width="11" height="11" rx="3" fill="#00CEC9"/>
+  <text class="legend-text" x="1069" y="599" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">딸기우유</text>
+  <rect x="58" y="612" width="11" height="11" rx="3" fill="#6C5CE7"/>
+  <text class="legend-text" x="73" y="621" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">콘칩</text>
+  <rect x="556" y="612" width="11" height="11" rx="3" fill="#FD79A8"/>
+  <text class="legend-text" x="571" y="621" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">게토레이</text>
+  <rect x="1054" y="612" width="11" height="11" rx="3" fill="#B2BEC3"/>
+  <text class="legend-text" x="1069" y="621" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">쿠크다스</text>
+  <rect x="58" y="634" width="11" height="11" rx="3" fill="#FF6B6B"/>
+  <text class="legend-text" x="73" y="643" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">데미소다</text>
+  <rect x="556" y="634" width="11" height="11" rx="3" fill="#FFD93D"/>
+  <text class="legend-text" x="571" y="643" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">꼬깔콘</text>
+  <rect x="1054" y="634" width="11" height="11" rx="3" fill="#6BCB77"/>
+  <text class="legend-text" x="1069" y="643" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">밀키스</text>
+  <rect x="58" y="656" width="11" height="11" rx="3" fill="#4D96FF"/>
+  <text class="legend-text" x="73" y="665" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">사이다</text>
+  <rect x="556" y="656" width="11" height="11" rx="3" fill="#A57BDB"/>
+  <text class="legend-text" x="571" y="665" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">자갈치</text>
+  <rect x="1054" y="656" width="11" height="11" rx="3" fill="#FF9F43"/>
+  <text class="legend-text" x="1069" y="665" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">코코팜</text>
+  <rect x="58" y="678" width="11" height="11" rx="3" fill="#38D9A9"/>
+  <text class="legend-text" x="73" y="687" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">빼빼로</text>
+  <rect x="556" y="678" width="11" height="11" rx="3" fill="#F06595"/>
+  <text class="legend-text" x="571" y="687" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">치토스</text>
+  <rect x="1054" y="678" width="11" height="11" rx="3" fill="#74B9FF"/>
+  <text class="legend-text" x="1069" y="687" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">아이스티</text>
+  <rect x="58" y="700" width="11" height="11" rx="3" fill="#FDCB6E"/>
+  <text class="legend-text" x="73" y="709" font-family="system-ui,-apple-system,'Segoe UI',sans-serif" font-size="11" fill="#666">토레타</text>
 </svg>
