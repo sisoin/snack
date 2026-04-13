@@ -479,13 +479,16 @@ def generate_readme(data: dict) -> str:
 
     details = "\n\n".join(detail_blocks)
 
-    # GitHub Actions 환경이면 raw URL, 로컬이면 상대경로
+    # GitHub Actions 환경이면 SVG를 README에 인라인 삽입 (CDN 캐싱 우회)
+    # 로컬이면 상대경로 사용
     repo = os.environ.get("GITHUB_REPOSITORY", "")
-    branch = os.environ.get("GITHUB_REF_NAME", "master")
-    chart_url = (
-        f"https://raw.githubusercontent.com/{repo}/{branch}/assets/histogram.svg"
-        if repo else "assets/histogram.svg"
-    )
+
+    # SVG 인라인 삽입 (Actions) 또는 상대경로 (로컬)
+    if repo and CHART_FILE.exists():
+        svg_content = CHART_FILE.read_text(encoding="utf-8").strip()
+        chart_section = svg_content
+    else:
+        chart_section = "![histogram](assets/histogram.svg)"
 
     return f"""# 🍿 간식 칼로리 기여 현황
 
@@ -493,7 +496,7 @@ def generate_readme(data: dict) -> str:
 
 ## 🏆 랭킹
 
-![histogram]({chart_url})
+{chart_section}
 
 ## 📋 상세 내역
 
@@ -509,7 +512,15 @@ def main() -> None:
     print("=== 🍿 간식 칼로리 처리 시작 ===\n")
 
     data = load_data()
-    cache: dict = data.get("calorie_cache", {})
+
+    # 0칼로리 캐시 항목 제거 → 이전 OpenAI 실패 결과를 재시도
+    cache: dict = {
+        k: v for k, v in data.get("calorie_cache", {}).items()
+        if v.get("calories_per_unit", 0) > 0
+    }
+    removed = len(data.get("calorie_cache", {})) - len(cache)
+    if removed:
+        print(f"🗑️  유효하지 않은 캐시 {removed}개 제거 (재시도 대상)\n")
 
     # 매번 전체를 재계산 (idempotent)
     new_contributors: dict = {}
