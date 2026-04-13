@@ -1630,13 +1630,6 @@
       "individual_unit": "개",
       "calories_per_individual": 40
     },
-    "제로콜라_캔": {
-      "calories_per_unit": 0,
-      "unit": "캔",
-      "count_per_unit": 1,
-      "individual_unit": "캔",
-      "calories_per_individual": 0
-    },
     "고래밥_봉지": {
       "calories_per_unit": 180,
       "unit": "봉지",
@@ -1762,6 +1755,13 @@
       "count_per_unit": 1,
       "individual_unit": "개",
       "calories_per_individual": 40
+    },
+    "제로콜라_캔": {
+      "calories_per_unit": 0,
+      "unit": "캔",
+      "count_per_unit": 1,
+      "individual_unit": "캔",
+      "calories_per_individual": 0
     }
   },
   "inventory": {
