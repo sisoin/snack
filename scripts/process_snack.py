@@ -658,11 +658,8 @@ def get_fun_stats(total_calories: int) -> list[str]:
 # ---------------------------------------------------------------------------
 
 def _svg_or_path(svg_file: Path, fallback_path: str) -> str:
-    """GitHub Actions 환경이면 SVG 인라인, 아니면 상대경로"""
-    repo = os.environ.get("GITHUB_REPOSITORY", "")
-    if repo and svg_file.exists():
-        return svg_file.read_text(encoding="utf-8").strip()
-    return f"![{svg_file.stem}]({fallback_path})"
+    """SVG 파일을 img 태그로 참조 (GitHub 마크다운은 인라인 SVG를 렌더링하지 않음)"""
+    return f'<img src="{fallback_path}" alt="{svg_file.stem}" />'
 
 
 def generate_readme(data: dict) -> str:
