@@ -5,7 +5,7 @@
   <line x1="500" y1="80" x2="500" y2="136" stroke="#30363D" stroke-width="1" stroke-dasharray="4,3"/>
   <line x1="610" y1="80" x2="610" y2="136" stroke="#30363D" stroke-width="1" stroke-dasharray="4,3"/>
   <text x="370" y="36" text-anchor="middle" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="20" font-weight="700" fill="#F0F6FC">&#x1F37F; Snack Calorie Rankings</text>
-  <text x="370" y="60" text-anchor="middle" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="13" fill="#8B949E">Total 7,200 kcal &nbsp;·&nbsp; 1 contributors</text>
+  <text x="370" y="60" text-anchor="middle" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="13" fill="#8B949E">Total 7,200 kcal &#160;·&#160; 1 contributors</text>
   <text x="160" y="113" text-anchor="end" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="18" fill="#8B949E">🥇</text>
   <text x="136" y="113" text-anchor="end" font-family="system-ui,-apple-system,Segoe UI,sans-serif" font-size="13" font-weight="600" fill="#E6EDF3">배민준</text>
   <rect x="170" y="90" width="440" height="36" rx="6" fill="#21262D"/>

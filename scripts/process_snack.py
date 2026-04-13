@@ -262,7 +262,7 @@ def generate_svg(data: dict) -> str:
         f'<text x="{W // 2}" y="60" text-anchor="middle" '
         f'font-family="system-ui,-apple-system,Segoe UI,sans-serif" '
         f'font-size="13" fill="#8B949E">'
-        f'Total {total_cal:,} kcal &nbsp;·&nbsp; {n} contributors</text>'
+        f'Total {total_cal:,} kcal &#160;·&#160; {n} contributors</text>'
     )
 
     # ── 막대 ──────────────────────────────────────────────────────
