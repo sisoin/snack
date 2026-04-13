@@ -54,7 +54,7 @@ jobs:
         run: |
           git config user.name  "Snack Bot 🍿"
           git config user.email "snack-bot@users.noreply.github.com"
-          git add data/snacks.json assets/histogram.svg README.md
+          git add data/snacks.json assets/histogram.svg assets/consumed.svg assets/inventory.svg README.md
           # 변경이 없으면 커밋하지 않음
           git diff --staged --quiet && echo "변경 없음, 스킵" && exit 0
           git commit -m "🍿 Update snack rankings [skip ci]"

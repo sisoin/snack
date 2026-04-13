@@ -2,7 +2,8 @@
 """
 간식 칼로리 기여 처리 스크립트
 contributions/*.txt 파일을 읽어 OpenAI로 칼로리를 계산하고
-data/snacks.json, assets/histogram.svg, README.md를 업데이트합니다.
+data/snacks.json, assets/histogram.svg, assets/consumed.svg,
+assets/inventory.svg, README.md를 업데이트합니다.
 """
 
 import os
@@ -20,6 +21,8 @@ ROOT = Path(__file__).parent.parent
 DATA_FILE = ROOT / "data" / "snacks.json"
 CONTRIBUTIONS_DIR = ROOT / "contributions"
 CHART_FILE = ROOT / "assets" / "histogram.svg"
+CONSUMED_FILE = ROOT / "assets" / "consumed.svg"
+INVENTORY_FILE = ROOT / "assets" / "inventory.svg"
 README_FILE = ROOT / "README.md"
 
 
@@ -44,24 +47,27 @@ def save_data(data: dict) -> None:
 # 파일 파싱
 # ---------------------------------------------------------------------------
 
-def parse_contribution_file(filepath: Path) -> tuple[str | None, list[tuple[str, int, str]]]:
+def parse_contribution_file(
+    filepath: Path,
+) -> tuple[str | None, list[tuple[str, int, str]], list[tuple[str, int, str]]]:
     """
-    txt 파일을 읽어 (표시이름, [(간식명, 개수, 단위)]) 를 반환합니다.
+    txt 파일을 읽어 (표시이름, 기여간식목록, 섭취간식목록) 를 반환합니다.
 
-    파일 첫 줄에 '# 이름: 홍길동' 형식으로 한글 표시 이름을 지정할 수 있습니다.
-    없으면 파일명(GitHub ID)을 그대로 사용합니다.
-
-    동일 간식+단위 조합은 자동으로 수량이 합산됩니다.
-      예) 새우깡 15봉지 + 새우깡 5봉지 → 새우깡 20봉지
+    ## 소비 섹션 이후의 줄은 섭취한 간식으로 파싱됩니다.
+    그 이전은 기여(가져온) 간식입니다.
 
     지원 형식:
       # 이름: 홍길동       → 표시 이름 "홍길동"
-      오예스 12개          → ("오예스", 12, "개")
-      초코파이 1박스       → ("초코파이", 1, "박스")
-      콜라 3캔             → ("콜라", 3, "캔")
+      오예스 12개          → 기여 간식 ("오예스", 12, "개")
+      초코파이 1박스       → 기여 간식 ("초코파이", 1, "박스")
+
+      ## 소비              → 이후 줄은 섭취 간식으로 파싱
+      새우깡 3봉지         → 섭취 간식 ("새우깡", 3, "봉지")
     """
     display_name: str | None = None
-    raw_snacks: list[tuple[str, int, str]] = []
+    mode = "contribution"
+    raw_contributions: list[tuple[str, int, str]] = []
+    raw_consumed: list[tuple[str, int, str]] = []
     name_pattern = re.compile(r"^#\s*이름\s*[:：]\s*(.+)")
     snack_pattern = re.compile(r"^(.+?)\s+(\d+)\s*([가-힣a-zA-Z]*)")
 
@@ -70,11 +76,17 @@ def parse_contribution_file(filepath: Path) -> tuple[str | None, list[tuple[str,
             line = line.strip()
             if not line:
                 continue
-            # 이름 지시어 파싱
-            name_match = name_pattern.match(line)
-            if name_match:
-                display_name = name_match.group(1).strip()
+            # 섹션 헤더
+            if line.startswith("##"):
+                section = line.lstrip("#").strip()
+                mode = "consumed" if section == "소비" else "contribution"
                 continue
+            # 이름 지시어 파싱 (기여 섹션에서만)
+            if mode == "contribution":
+                name_match = name_pattern.match(line)
+                if name_match:
+                    display_name = name_match.group(1).strip()
+                    continue
             # 일반 주석 무시
             if line.startswith("#"):
                 continue
@@ -84,22 +96,26 @@ def parse_contribution_file(filepath: Path) -> tuple[str | None, list[tuple[str,
                 snack_name = snack_match.group(1).strip()
                 quantity = int(snack_match.group(2))
                 unit = snack_match.group(3).strip() or "개"
-                raw_snacks.append((snack_name, quantity, unit))
+                if mode == "consumed":
+                    raw_consumed.append((snack_name, quantity, unit))
+                else:
+                    raw_contributions.append((snack_name, quantity, unit))
             else:
                 print(f"  ⚠️  파싱 실패 (무시됨): '{line}'", file=sys.stderr)
 
-    # 동일 간식+단위 자동 병합
-    merged: dict[str, tuple[str, int, str]] = {}
-    for snack_name, quantity, unit in raw_snacks:
-        key = f"{snack_name}_{unit}"
-        if key in merged:
-            orig_name, orig_qty, orig_unit = merged[key]
-            merged[key] = (orig_name, orig_qty + quantity, orig_unit)
-            print(f"  🔀 병합: {snack_name} {quantity}{unit} → 합계 {orig_qty + quantity}{unit}")
-        else:
-            merged[key] = (snack_name, quantity, unit)
+    def merge(items: list[tuple[str, int, str]]) -> list[tuple[str, int, str]]:
+        merged: dict[str, tuple[str, int, str]] = {}
+        for snack_name, quantity, unit in items:
+            key = f"{snack_name}_{unit}"
+            if key in merged:
+                orig_name, orig_qty, orig_unit = merged[key]
+                merged[key] = (orig_name, orig_qty + quantity, orig_unit)
+                print(f"  🔀 병합: {snack_name} {quantity}{unit} → 합계 {orig_qty + quantity}{unit}")
+            else:
+                merged[key] = (snack_name, quantity, unit)
+        return list(merged.values())
 
-    return display_name, list(merged.values())
+    return display_name, merge(raw_contributions), merge(raw_consumed)
 
 
 # ---------------------------------------------------------------------------
@@ -109,14 +125,6 @@ def parse_contribution_file(filepath: Path) -> tuple[str | None, list[tuple[str,
 def get_calorie_info(snack_name: str, unit: str, cache: dict) -> dict:
     """
     OpenAI를 통해 간식의 단위당 칼로리 상세 정보를 조회합니다.
-
-    반환 구조:
-      calories_per_unit   : 사용자가 명시한 단위(unit) 1개당 총 칼로리
-      unit                : 사용자가 명시한 단위 (박스/봉지/개/캔 등)
-      count_per_unit      : 해당 단위 안에 낱개가 몇 개 들어있는지 (개 단위면 1)
-      individual_unit     : 낱개 단위 이름 (개, 조각, 캔 등)
-      calories_per_individual : 낱개 1개당 칼로리
-
     캐시 키는 "간식명_단위" 로 저장하여 박스/봉지/개를 구분합니다.
     """
     cache_key = f"{snack_name.strip().lower()}_{unit.strip().lower()}"
@@ -167,7 +175,6 @@ def get_calorie_info(snack_name: str, unit: str, cache: dict) -> dict:
             temperature=0,
         )
         result = json.loads(response.choices[0].message.content)
-        # 기본값 보호
         result.setdefault("calories_per_unit", 0)
         result.setdefault("unit", unit)
         result.setdefault("count_per_unit", 1)
@@ -185,7 +192,6 @@ def get_calorie_info(snack_name: str, unit: str, cache: dict) -> dict:
 
     except Exception as e:
         print(f"  ❌ OpenAI 오류 ({snack_name} {unit}): {e}", file=sys.stderr)
-        # 실패 결과는 캐시하지 않음 → 다음 실행 때 재시도
         return {
             "calories_per_unit": 0, "unit": unit,
             "count_per_unit": 1, "individual_unit": "개",
@@ -194,10 +200,9 @@ def get_calorie_info(snack_name: str, unit: str, cache: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# SVG 히스토그램 생성 (세로형 스택 막대 차트)
+# 공통 SVG 유틸
 # ---------------------------------------------------------------------------
 
-# 간식별 색상 팔레트
 SNACK_PALETTE = [
     "#FF6B6B", "#FFD93D", "#6BCB77", "#4D96FF", "#A57BDB",
     "#FF9F43", "#38D9A9", "#F06595", "#74B9FF", "#FDCB6E",
@@ -209,31 +214,62 @@ FONT = "system-ui,-apple-system,'Segoe UI',sans-serif"
 
 
 def _esc(text: str) -> str:
-    """SVG/XML 특수문자 이스케이프"""
     return html.escape(str(text))
 
 
-def generate_svg(data: dict) -> str:
+_DARK_STYLE = (
+    '<style>\n'
+    '  @media (prefers-color-scheme: dark) {\n'
+    '    .bg { fill: #1A1A2E !important; }\n'
+    '    .border { stroke: #333 !important; }\n'
+    '    .title { fill: #E8E8E8 !important; }\n'
+    '    .subtitle { fill: #888 !important; }\n'
+    '    .grid { stroke: #333 !important; }\n'
+    '    .grid-base { stroke: #444 !important; }\n'
+    '    .axis-label { fill: #666 !important; }\n'
+    '    .bar-bg { fill: #2A2A3E !important; }\n'
+    '    .rank-label { fill: #CCC !important; }\n'
+    '    .cal-label { fill: #DDD !important; }\n'
+    '    .name-label { fill: #E8E8E8 !important; }\n'
+    '    .name-sub { fill: #666 !important; }\n'
+    '    .legend-text { fill: #AAA !important; }\n'
+    '    .inv-row-alt { fill: #16213E !important; }\n'
+    '    .inv-name { fill: #E8E8E8 !important; }\n'
+    '    .inv-sub { fill: #666 !important; }\n'
+    '    .inv-bar-bg { fill: #333 !important; }\n'
+    '    .inv-pct { fill: #888 !important; }\n'
+    '  }\n'
+    '</style>'
+)
+
+
+# ---------------------------------------------------------------------------
+# SVG 히스토그램 생성 (기여도 / 섭취 랭킹 공용)
+# ---------------------------------------------------------------------------
+
+def generate_ranking_svg(
+    *,
+    title_xml: str,
+    subtitle: str,
+    sorted_list: list[tuple[str, dict]],
+    cal_key: str,
+    snacks_key: str,
+) -> str:
     """
     세로형 스택 막대 차트 SVG를 생성합니다.
-    - 각 막대는 간식별로 색상을 달리하여 쌓아올립니다.
-    - 배경 흰색, 범례 하단 표시.
+    title_xml  : SVG에 들어갈 제목 (XML 특수문자 이스케이프 적용 필요)
+    cal_key    : 총 칼로리 키 ('total_calories' 또는 'total_consumed_calories')
+    snacks_key : 간식 목록 키 ('snacks' 또는 'consumed')
     """
-    contributors: dict = data.get("contributors", {})
-    if not contributors:
+    if not sorted_list:
         return ""
 
-    sorted_list = sorted(
-        contributors.items(),
-        key=lambda x: x[1]["total_calories"],
-        reverse=True,
-    )
     n = len(sorted_list)
 
-    # ── 간식별 색상 할당 (모든 기여자에서 동일 색상 유지) ────────────
+    # 간식별 색상 할당
     all_snack_names: list[str] = []
     for _, info in sorted_list:
-        for s in info["snacks"]:
+        for s in info.get(snacks_key, []):
             if s["name"] not in all_snack_names:
                 all_snack_names.append(s["name"])
     snack_color = {
@@ -241,7 +277,7 @@ def generate_svg(data: dict) -> str:
         for i, name in enumerate(all_snack_names)
     }
 
-    # ── 레이아웃 ─────────────────────────────────────────────────
+    # 레이아웃
     if n <= 3:
         BAR_W, GAP = 90, 36
     elif n <= 6:
@@ -251,93 +287,86 @@ def generate_svg(data: dict) -> str:
     else:
         BAR_W, GAP = 44, 14
 
-    LEFT      = 58    # y축 레이블
-    RIGHT     = 20
-    TOP       = 80    # 제목 영역
-    CHART_H   = 280   # 막대 최대 높이
-    NAME_H    = 50    # 기여자 이름 영역
+    LEFT = 58
+    RIGHT = 20
+    TOP = 80
+    CHART_H = 280
+    NAME_H = 50
     LEGEND_COLS = min(3, len(all_snack_names)) if all_snack_names else 1
     LEGEND_ROWS = math.ceil(len(all_snack_names) / LEGEND_COLS) if all_snack_names else 0
-    LEGEND_H  = LEGEND_ROWS * 22 + 20 if all_snack_names else 0
-    BOTTOM    = NAME_H + LEGEND_H + 16
+    LEGEND_H = LEGEND_ROWS * 22 + 20 if all_snack_names else 0
+    BOTTOM = NAME_H + LEGEND_H + 16
 
     W = max(LEFT + n * (BAR_W + GAP) - GAP + RIGHT, 480)
     H = TOP + CHART_H + BOTTOM
 
-    bar_base_y = TOP + CHART_H  # 막대 하단 기준선 y
-    max_cal   = sorted_list[0][1]["total_calories"] if sorted_list else 1
-    total_cal = sum(v["total_calories"] for v in contributors.values())
-    total_snack_count = sum(
-        s["quantity"] * s.get("count_per_unit", 1)
-        for info in contributors.values()
-        for s in info["snacks"]
-    )
+    bar_base_y = TOP + CHART_H
+    max_cal = sorted_list[0][1].get(cal_key, 0) if sorted_list else 1
+    if max_cal == 0:
+        max_cal = 1
+    total_cal = sum(v.get(cal_key, 0) for _, v in sorted_list)
 
     lines: list[str] = []
 
-    # ── 배경 & 테두리 ─────────────────────────────────────────────
     lines.append(f'<rect class="bg" width="{W}" height="{H}" fill="#FFFFFF"/>')
     lines.append(
         f'<rect class="border" width="{W}" height="{H}" rx="12" '
         f'fill="none" stroke="#E8E8E8" stroke-width="1"/>'
     )
-
-    # ── 제목 ──────────────────────────────────────────────────────
     lines.append(
         f'<text class="title" x="{W // 2}" y="30" text-anchor="middle" '
         f'font-family="{FONT}" font-size="17" font-weight="700" fill="#1A1A2E">'
-        f'&#x1F37F; 간식 기여도</text>'
+        f'{title_xml}</text>'
     )
     lines.append(
         f'<text class="subtitle" x="{W // 2}" y="52" text-anchor="middle" '
         f'font-family="{FONT}" font-size="12" fill="#999">'
-        f'총 칼로리 {total_cal:,} kcal &#160;·&#160; 참여자 {n}명 '
-        f'&#160;·&#160; 총 간식 {total_snack_count:,}개</text>'
+        f'{_esc(subtitle)}</text>'
     )
 
-    # ── Y축 격자선 + 레이블 ───────────────────────────────────────
-    grid_steps = 5
-    for i in range(grid_steps + 1):
-        cal_val = round(max_cal * i / grid_steps)
-        gy = bar_base_y - round(CHART_H * i / grid_steps)
+    # Y축 격자선
+    for i in range(6):
+        cal_val = round(max_cal * i / 5)
+        gy = bar_base_y - round(CHART_H * i / 5)
         grid_cls = "grid" if i > 0 else "grid-base"
         stroke = "#EFEFEF" if i > 0 else "#DDDDDD"
         lines.append(
             f'<line class="{grid_cls}" x1="{LEFT - 4}" y1="{gy}" x2="{W - RIGHT}" y2="{gy}" '
             f'stroke="{stroke}" stroke-width="1"/>'
         )
-        label = f"{cal_val // 1000}천" if cal_val >= 1000 else str(cal_val)
+        if cal_val >= 10000:
+            label = f"{cal_val // 1000}천"
+        elif cal_val >= 1000:
+            label = f"{cal_val / 1000:.1f}천"
+        else:
+            label = str(cal_val)
         lines.append(
             f'<text class="axis-label" x="{LEFT - 8}" y="{gy + 4}" text-anchor="end" '
             f'font-family="{FONT}" font-size="10" fill="#BBBBBB">{_esc(label)}</text>'
         )
 
-    # ── 막대 (스택형) ─────────────────────────────────────────────
+    # 막대
     for idx, (username, info) in enumerate(sorted_list):
         x = LEFT + idx * (BAR_W + GAP)
-        total_h = max(round((info["total_calories"] / max_cal) * CHART_H), 2) if max_cal > 0 else 2
+        person_cal = info.get(cal_key, 0)
+        total_h = max(round((person_cal / max_cal) * CHART_H), 2)
         bar_top_y = bar_base_y - total_h
         rank_label = RANK_ICONS[idx] if idx < 3 else f"#{idx + 1}"
 
-        # 클립패스로 둥근 모서리 적용
         clip_id = f"c{idx}"
         lines.append(
             f'<clipPath id="{clip_id}">'
             f'<rect x="{x}" y="{bar_top_y}" width="{BAR_W}" height="{total_h}" rx="5"/>'
             f'</clipPath>'
         )
-
-        # 막대 배경
         lines.append(
             f'<rect class="bar-bg" x="{x}" y="{bar_top_y}" width="{BAR_W}" '
             f'height="{total_h}" rx="5" fill="#F5F5F5"/>'
         )
-
-        # 간식 세그먼트 (아래→위)
         lines.append(f'<g clip-path="url(#{clip_id})">')
         current_y = bar_base_y
-        for s in reversed(info["snacks"]):
-            seg_h = max(round((s["total_calories"] / max_cal) * CHART_H), 2) if max_cal > 0 else 2
+        for s in reversed(info.get(snacks_key, [])):
+            seg_h = max(round((s["total_calories"] / max_cal) * CHART_H), 2)
             current_y -= seg_h
             color = snack_color.get(s["name"], "#CCC")
             lines.append(
@@ -346,19 +375,15 @@ def generate_svg(data: dict) -> str:
             )
         lines.append('</g>')
 
-        # 순위 이모지 (막대 위)
         lines.append(
             f'<text class="rank-label" x="{x + BAR_W // 2}" y="{bar_top_y - 20}" text-anchor="middle" '
             f'font-family="{FONT}" font-size="16" fill="#555">{_esc(rank_label)}</text>'
         )
-        # 칼로리 수치 (막대 위, 순위 아래)
         lines.append(
             f'<text class="cal-label" x="{x + BAR_W // 2}" y="{bar_top_y - 6}" text-anchor="middle" '
             f'font-family="{FONT}" font-size="10" font-weight="600" fill="#444">'
-            f'{info["total_calories"]:,}</text>'
+            f'{person_cal:,}</text>'
         )
-
-        # 기여자 이름 (막대 아래)
         display = info.get("display_name") or username
         name_label = display if display != username else f"@{username}"
         lines.append(
@@ -373,7 +398,7 @@ def generate_svg(data: dict) -> str:
                 f'@{_esc(username)}</text>'
             )
 
-    # ── 범례 ─────────────────────────────────────────────────────
+    # 범례
     if all_snack_names:
         legend_top = TOP + CHART_H + NAME_H + 4
         col_w = (W - LEFT - RIGHT) // LEGEND_COLS
@@ -383,40 +408,167 @@ def generate_svg(data: dict) -> str:
             lx = LEFT + col * col_w
             ly = legend_top + row * 22
             color = snack_color[name]
-            lines.append(
-                f'<rect x="{lx}" y="{ly}" width="11" height="11" rx="3" fill="{color}"/>'
-            )
+            lines.append(f'<rect x="{lx}" y="{ly}" width="11" height="11" rx="3" fill="{color}"/>')
             lines.append(
                 f'<text class="legend-text" x="{lx + 15}" y="{ly + 9}" '
                 f'font-family="{FONT}" font-size="11" fill="#666">{_esc(name)}</text>'
             )
 
-    # ── 다크모드 스타일 ─────────────────────────────────────────
-    dark_style = (
-        '<style>\n'
-        '  @media (prefers-color-scheme: dark) {\n'
-        '    .bg { fill: #1A1A2E !important; }\n'
-        '    .border { stroke: #333 !important; }\n'
-        '    .title { fill: #E8E8E8 !important; }\n'
-        '    .subtitle { fill: #888 !important; }\n'
-        '    .grid { stroke: #333 !important; }\n'
-        '    .grid-base { stroke: #444 !important; }\n'
-        '    .axis-label { fill: #666 !important; }\n'
-        '    .bar-bg { fill: #2A2A3E !important; }\n'
-        '    .rank-label { fill: #CCC !important; }\n'
-        '    .cal-label { fill: #DDD !important; }\n'
-        '    .name-label { fill: #E8E8E8 !important; }\n'
-        '    .name-sub { fill: #666 !important; }\n'
-        '    .legend-text { fill: #AAA !important; }\n'
-        '  }\n'
-        '</style>'
+    inner = "\n  ".join(lines)
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" '
+        f'width="{W}" height="{H}" viewBox="0 0 {W} {H}">\n'
+        f'  {_DARK_STYLE}\n'
+        f'  {inner}\n'
+        f'</svg>\n'
     )
+
+
+def generate_svg(data: dict) -> str:
+    """간식 기여도 랭킹 SVG"""
+    contributors: dict = data.get("contributors", {})
+    if not contributors:
+        return ""
+    sorted_list = sorted(
+        contributors.items(),
+        key=lambda x: x[1]["total_calories"],
+        reverse=True,
+    )
+    total_cal = sum(v["total_calories"] for v in contributors.values())
+    total_count = sum(
+        s["quantity"] * s.get("count_per_unit", 1)
+        for info in contributors.values()
+        for s in info["snacks"]
+    )
+    return generate_ranking_svg(
+        title_xml="&#x1F37F; 간식 기여도",
+        subtitle=f"총 칼로리 {total_cal:,} kcal · 참여자 {len(contributors)}명 · 총 간식 {total_count:,}개",
+        sorted_list=sorted_list,
+        cal_key="total_calories",
+        snacks_key="snacks",
+    )
+
+
+def generate_consumed_svg(data: dict) -> str:
+    """섭취 칼로리 랭킹 SVG"""
+    contributors: dict = data.get("contributors", {})
+    ranked = [
+        (u, info) for u, info in contributors.items()
+        if info.get("total_consumed_calories", 0) > 0
+    ]
+    if not ranked:
+        return ""
+    sorted_list = sorted(ranked, key=lambda x: x[1]["total_consumed_calories"], reverse=True)
+    total_consumed = sum(v.get("total_consumed_calories", 0) for v in contributors.values())
+    return generate_ranking_svg(
+        title_xml="&#x1F374; 섭취 칼로리 랭킹",
+        subtitle=f"총 섭취 칼로리 {total_consumed:,} kcal · 참여자 {len(sorted_list)}명",
+        sorted_list=sorted_list,
+        cal_key="total_consumed_calories",
+        snacks_key="consumed",
+    )
+
+
+# ---------------------------------------------------------------------------
+# SVG 인벤토리 카드 생성 (탕비실 현황)
+# ---------------------------------------------------------------------------
+
+def generate_inventory_svg(inventory: dict) -> str:
+    """탕비실 남은 간식 현황 카드 SVG"""
+    if not inventory:
+        return ""
+
+    items = sorted(inventory.values(), key=lambda x: x["remaining"], reverse=True)
+
+    W = 480
+    PAD_X = 24
+    ROW_H = 54
+    HEADER_H = 72
+    H = HEADER_H + len(items) * ROW_H + 16
+
+    BAR_X = 200
+    BAR_W = W - BAR_X - PAD_X - 40  # 40: percentage text area
+    BAR_H = 12
+
+    total_remaining = sum(v["remaining"] for v in items)
+    total_contributed = sum(v["contributed"] for v in items)
+
+    lines: list[str] = []
+
+    lines.append(f'<rect class="bg" width="{W}" height="{H}" fill="#FFFFFF"/>')
+    lines.append(
+        f'<rect class="border" width="{W}" height="{H}" rx="12" '
+        f'fill="none" stroke="#E8E8E8" stroke-width="1"/>'
+    )
+    lines.append(
+        f'<text class="title" x="{W // 2}" y="30" text-anchor="middle" '
+        f'font-family="{FONT}" font-size="17" font-weight="700" fill="#1A1A2E">'
+        f'&#x1F3EA; 탕비실 현황</text>'
+    )
+    lines.append(
+        f'<text class="subtitle" x="{W // 2}" y="52" text-anchor="middle" '
+        f'font-family="{FONT}" font-size="12" fill="#999">'
+        f'총 {total_remaining}개 남음 &#160;·&#160; 총 {total_contributed}개 기여</text>'
+    )
+
+    for i, item in enumerate(items):
+        y = HEADER_H + i * ROW_H
+        contributed = item["contributed"]
+        consumed = item["consumed"]
+        remaining = item["remaining"]
+        ratio = remaining / contributed if contributed > 0 else 0
+        pct = round(ratio * 100)
+
+        if ratio > 0.66:
+            bar_color = "#6BCB77"
+        elif ratio > 0.33:
+            bar_color = "#FFD93D"
+        else:
+            bar_color = "#FF6B6B"
+
+        # 짝수 행 배경
+        if i % 2 == 1:
+            lines.append(
+                f'<rect class="inv-row-alt" x="0" y="{y}" width="{W}" height="{ROW_H}" fill="#F9F9F9"/>'
+            )
+
+        # 간식 이름
+        lines.append(
+            f'<text class="inv-name" x="{PAD_X}" y="{y + 23}" '
+            f'font-family="{FONT}" font-size="14" font-weight="700" fill="#222">'
+            f'{_esc(item["name"])}</text>'
+        )
+        # 수량 정보
+        lines.append(
+            f'<text class="inv-sub" x="{PAD_X}" y="{y + 40}" '
+            f'font-family="{FONT}" font-size="11" fill="#AAAAAA">'
+            f'{remaining}/{contributed}{_esc(item["unit"])} &#160;·&#160; {consumed}개 섭취</text>'
+        )
+
+        # 프로그레스 바 배경
+        bar_y = y + 20
+        lines.append(
+            f'<rect class="inv-bar-bg" x="{BAR_X}" y="{bar_y}" '
+            f'width="{BAR_W}" height="{BAR_H}" rx="6" fill="#EEEEEE"/>'
+        )
+        # 프로그레스 바 채우기
+        fill_w = max(round(ratio * BAR_W), 0 if remaining == 0 else 4)
+        if fill_w > 0:
+            lines.append(
+                f'<rect x="{BAR_X}" y="{bar_y}" '
+                f'width="{fill_w}" height="{BAR_H}" rx="6" fill="{bar_color}"/>'
+            )
+        # 퍼센트 텍스트
+        lines.append(
+            f'<text class="inv-pct" x="{BAR_X + BAR_W + 6}" y="{bar_y + 10}" '
+            f'font-family="{FONT}" font-size="11" fill="#999">{pct}%</text>'
+        )
 
     inner = "\n  ".join(lines)
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" '
         f'width="{W}" height="{H}" viewBox="0 0 {W} {H}">\n'
-        f'  {dark_style}\n'
+        f'  {_DARK_STYLE}\n'
         f'  {inner}\n'
         f'</svg>\n'
     )
@@ -427,8 +579,25 @@ def save_chart(data: dict) -> bool:
     if not svg:
         return False
     CHART_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(CHART_FILE, "w", encoding="utf-8") as f:
-        f.write(svg)
+    CHART_FILE.write_text(svg, encoding="utf-8")
+    return True
+
+
+def save_consumed_chart(data: dict) -> bool:
+    svg = generate_consumed_svg(data)
+    if not svg:
+        return False
+    CONSUMED_FILE.parent.mkdir(parents=True, exist_ok=True)
+    CONSUMED_FILE.write_text(svg, encoding="utf-8")
+    return True
+
+
+def save_inventory_chart(inventory: dict) -> bool:
+    svg = generate_inventory_svg(inventory)
+    if not svg:
+        return False
+    INVENTORY_FILE.parent.mkdir(parents=True, exist_ok=True)
+    INVENTORY_FILE.write_text(svg, encoding="utf-8")
     return True
 
 
@@ -447,7 +616,6 @@ BADGES = [
 
 
 def get_badges(total_calories: int) -> list[tuple[str, str, str]]:
-    """달성한 뱃지 목록을 (아이콘, 이름, 설명) 튜플 리스트로 반환"""
     return [
         (icon, name, desc)
         for threshold, icon, name, desc in BADGES
@@ -456,7 +624,6 @@ def get_badges(total_calories: int) -> list[tuple[str, str, str]]:
 
 
 def get_next_badge(total_calories: int) -> tuple[int, str, str] | None:
-    """다음 달성 가능한 뱃지 정보를 (남은칼로리, 아이콘, 이름)으로 반환"""
     for threshold, icon, name, _ in reversed(BADGES):
         if total_calories < threshold:
             return (threshold - total_calories, icon, name)
@@ -478,7 +645,6 @@ CALORIE_EQUIVALENTS = [
 
 
 def get_fun_stats(total_calories: int) -> list[str]:
-    """총 칼로리를 재미있는 등가 환산 문자열 리스트로 변환"""
     stats = []
     for cal, icon, name in CALORIE_EQUIVALENTS:
         count = total_calories / cal
@@ -491,22 +657,36 @@ def get_fun_stats(total_calories: int) -> list[str]:
 # README 생성
 # ---------------------------------------------------------------------------
 
+def _svg_or_path(svg_file: Path, fallback_path: str) -> str:
+    """GitHub Actions 환경이면 SVG 인라인, 아니면 상대경로"""
+    repo = os.environ.get("GITHUB_REPOSITORY", "")
+    if repo and svg_file.exists():
+        return svg_file.read_text(encoding="utf-8").strip()
+    return f"![{svg_file.stem}]({fallback_path})"
+
+
 def generate_readme(data: dict) -> str:
     contributors: dict = data.get("contributors", {})
+    inventory: dict = data.get("inventory", {})
 
     how_to = """
 ## 🙋 참여 방법
 
 1. 이 저장소를 **Fork** 하세요
 2. `contributions/` 폴더에 `{본인_GitHub_ID}.txt` 파일을 만드세요
-3. 파일 **첫 줄**에 본인 이름을 추가하고, 이후 줄에 간식명과 개수를 입력하세요:
+3. 파일에 이름과 기여한 간식, 먹은 간식을 입력하세요:
    ```
    # 이름: 홍길동
    오예스 12개
    초코파이 1박스
    콜라 3캔
+
+   ## 소비
+   오예스 2개
+   콜라 1캔
    ```
    > `# 이름:` 줄은 선택사항입니다. 없으면 GitHub ID가 표시됩니다.
+   > `## 소비` 섹션 이후는 실제로 먹은 간식으로 처리됩니다.
    > 묶음 단위(`1박스`, `2팩` 등)도 자동으로 낱개 수와 칼로리를 계산합니다.
 4. **Pull Request** 를 열면 자동으로 칼로리가 계산되어 랭킹에 반영됩니다 🎉
 
@@ -534,14 +714,13 @@ def generate_readme(data: dict) -> str:
         for s in info["snacks"]
     )
 
-    # ── 칼로리 등가 환산 ──
     fun_stats = get_fun_stats(total_cal)
     fun_section = ""
     if fun_stats:
         fun_lines = " &nbsp;|&nbsp; ".join(fun_stats[:4])
         fun_section = f"\n> 🎯 {fun_lines}\n"
 
-    # ── 상세 내역 (접을 수 있는 섹션) ──
+    # 상세 내역
     detail_blocks = []
     medals = ["🥇", "🥈", "🥉"]
     for rank, (username, info) in enumerate(sorted_list):
@@ -549,7 +728,6 @@ def generate_readme(data: dict) -> str:
         display = info.get("display_name") or username
         name_label = f"{display} (@{username})" if display != username else f"@{username}"
 
-        # 뱃지 생성
         earned_badges = get_badges(info["total_calories"])
         badge_str = " ".join(f"{icon}" for icon, _, _ in earned_badges)
         next_badge = get_next_badge(info["total_calories"])
@@ -568,14 +746,9 @@ def generate_readme(data: dict) -> str:
         ]
         for s in info["snacks"]:
             count_per = s.get("count_per_unit", 1)
-            ind_unit  = s.get("individual_unit", "개")
-            cal_ind   = s.get("calories_per_individual", s["calories_per_unit"])
-            # 묶음 단위일 때만 구성 표시 (count_per > 1)
-            composition = (
-                f"{count_per}{ind_unit}입"
-                if count_per > 1
-                else f"1{ind_unit}"
-            )
+            ind_unit = s.get("individual_unit", "개")
+            cal_ind = s.get("calories_per_individual", s["calories_per_unit"])
+            composition = f"{count_per}{ind_unit}입" if count_per > 1 else f"1{ind_unit}"
             total_count = s["quantity"] * count_per
             lines.append(
                 f"| {s['name']} | {s['quantity']}{s['unit']} "
@@ -583,22 +756,41 @@ def generate_readme(data: dict) -> str:
                 f"| {cal_ind:,} kcal/{ind_unit} "
                 f"| **{s['total_calories']:,} kcal** |"
             )
+
+        # 섭취 정보
+        consumed_items = info.get("consumed", [])
+        consumed_cal = info.get("total_consumed_calories", 0)
+        if consumed_items:
+            lines.append("")
+            lines.append(f"**섭취한 간식** — {consumed_cal:,} kcal")
+            lines.append("")
+            lines.append("| 간식 | 수량 | 칼로리 |")
+            lines.append("|------|-----:|-------:|")
+            for s in consumed_items:
+                lines.append(
+                    f"| {s['name']} | {s['quantity']}{s['unit']} "
+                    f"| {s['total_calories']:,} kcal |"
+                )
+
         lines.append("")
         lines.append("</details>")
         detail_blocks.append("\n".join(lines))
 
     details = "\n\n".join(detail_blocks)
 
-    # GitHub Actions 환경이면 SVG를 README에 인라인 삽입 (CDN 캐싱 우회)
-    # 로컬이면 상대경로 사용
-    repo = os.environ.get("GITHUB_REPOSITORY", "")
+    # SVG 섹션
+    chart_section = _svg_or_path(CHART_FILE, "assets/histogram.svg")
 
-    # SVG 인라인 삽입 (Actions) 또는 상대경로 (로컬)
-    if repo and CHART_FILE.exists():
-        svg_content = CHART_FILE.read_text(encoding="utf-8").strip()
-        chart_section = svg_content
-    else:
-        chart_section = "![histogram](assets/histogram.svg)"
+    has_consumed = any(v.get("total_consumed_calories", 0) > 0 for v in contributors.values())
+    consumed_section = ""
+    if has_consumed:
+        consumed_svg = _svg_or_path(CONSUMED_FILE, "assets/consumed.svg")
+        consumed_section = f"\n## 🍽️ 섭취 칼로리 랭킹\n\n{consumed_svg}\n"
+
+    inventory_section = ""
+    if inventory:
+        inventory_svg = _svg_or_path(INVENTORY_FILE, "assets/inventory.svg")
+        inventory_section = f"\n## 🏪 탕비실 현황\n\n{inventory_svg}\n"
 
     return f"""# 🍿 간식 칼로리 기여 현황
 
@@ -607,7 +799,7 @@ def generate_readme(data: dict) -> str:
 ## 🏆 랭킹
 
 {chart_section}
-
+{consumed_section}{inventory_section}
 ## 📋 상세 내역
 
 {details}
@@ -623,7 +815,7 @@ def main() -> None:
 
     data = load_data()
 
-    # 0칼로리 캐시 항목 제거 → 이전 OpenAI 실패 결과를 재시도
+    # 0칼로리 캐시 항목 제거
     cache: dict = {
         k: v for k, v in data.get("calorie_cache", {}).items()
         if v.get("calories_per_unit", 0) > 0
@@ -632,7 +824,6 @@ def main() -> None:
     if removed:
         print(f"🗑️  유효하지 않은 캐시 {removed}개 제거 (재시도 대상)\n")
 
-    # 매번 전체를 재계산 (idempotent)
     new_contributors: dict = {}
 
     txt_files = sorted(CONTRIBUTIONS_DIR.glob("*.txt"))
@@ -644,54 +835,118 @@ def main() -> None:
         if username.startswith(".") or username == "example":
             continue
 
-        display_name, snacks = parse_contribution_file(txt_file)
+        display_name, contributions, consumed_items = parse_contribution_file(txt_file)
         label = display_name or username
         print(f"\n👤 {label} (@{username})")
-        if not snacks:
+
+        if not contributions and not consumed_items:
             print("  (항목 없음)")
             continue
 
-        contributor: dict = {"total_calories": 0, "display_name": label, "snacks": []}
-        for snack_name, quantity, unit in snacks:
+        contributor: dict = {
+            "total_calories": 0,
+            "total_consumed_calories": 0,
+            "display_name": label,
+            "snacks": [],
+            "consumed": [],
+        }
+
+        # 기여 간식 처리
+        for snack_name, quantity, unit in contributions:
             info = get_calorie_info(snack_name, unit, cache)
             cal_per_unit = info.get("calories_per_unit", 0)
             if cal_per_unit == 0:
-                print(f"  ⚠️  칼로리 0 — 건너뜀 (다음 실행 때 재시도): {snack_name} {unit}", file=sys.stderr)
+                print(f"  ⚠️  칼로리 0 — 건너뜀: {snack_name} {unit}", file=sys.stderr)
                 continue
             total = cal_per_unit * quantity
-            contributor["snacks"].append(
-                {
-                    "name": snack_name,
-                    "quantity": quantity,
-                    "unit": info.get("unit", unit),
-                    "count_per_unit": info.get("count_per_unit", 1),
-                    "individual_unit": info.get("individual_unit", "개"),
-                    "calories_per_unit": cal_per_unit,
-                    "calories_per_individual": info.get("calories_per_individual", cal_per_unit),
-                    "total_calories": total,
-                }
-            )
+            contributor["snacks"].append({
+                "name": snack_name,
+                "quantity": quantity,
+                "unit": info.get("unit", unit),
+                "count_per_unit": info.get("count_per_unit", 1),
+                "individual_unit": info.get("individual_unit", "개"),
+                "calories_per_unit": cal_per_unit,
+                "calories_per_individual": info.get("calories_per_individual", cal_per_unit),
+                "total_calories": total,
+            })
             contributor["total_calories"] += total
 
+        # 섭취 간식 처리
+        if consumed_items:
+            print(f"  🍽️  섭취 간식 처리 중...")
+        for snack_name, quantity, unit in consumed_items:
+            info = get_calorie_info(snack_name, unit, cache)
+            cal_per_unit = info.get("calories_per_unit", 0)
+            total = cal_per_unit * quantity
+            contributor["consumed"].append({
+                "name": snack_name,
+                "quantity": quantity,
+                "unit": info.get("unit", unit),
+                "count_per_unit": info.get("count_per_unit", 1),
+                "individual_unit": info.get("individual_unit", "개"),
+                "calories_per_unit": cal_per_unit,
+                "calories_per_individual": info.get("calories_per_individual", cal_per_unit),
+                "total_calories": total,
+            })
+            contributor["total_consumed_calories"] += total
+
         new_contributors[username] = contributor
-        print(f"  💪 소계: {contributor['total_calories']:,} kcal")
+        print(f"  💪 기여: {contributor['total_calories']:,} kcal  |  🍽️ 섭취: {contributor['total_consumed_calories']:,} kcal")
+
+    # 인벤토리 계산
+    inventory: dict = {}
+    for username, info in new_contributors.items():
+        for s in info["snacks"]:
+            key = f"{s['name']}_{s['unit']}"
+            if key not in inventory:
+                inventory[key] = {
+                    "name": s["name"],
+                    "unit": s["unit"],
+                    "individual_unit": s["individual_unit"],
+                    "count_per_unit": s["count_per_unit"],
+                    "contributed": 0,
+                    "consumed": 0,
+                }
+            inventory[key]["contributed"] += s["quantity"]
+        for s in info.get("consumed", []):
+            key = f"{s['name']}_{s['unit']}"
+            if key not in inventory:
+                inventory[key] = {
+                    "name": s["name"],
+                    "unit": s["unit"],
+                    "individual_unit": s.get("individual_unit", "개"),
+                    "count_per_unit": s.get("count_per_unit", 1),
+                    "contributed": 0,
+                    "consumed": 0,
+                }
+            inventory[key]["consumed"] += s["quantity"]
+
+    for key in inventory:
+        inventory[key]["remaining"] = max(0, inventory[key]["contributed"] - inventory[key]["consumed"])
 
     data["contributors"] = new_contributors
     data["calorie_cache"] = cache
+    data["inventory"] = inventory
 
     save_data(data)
     print(f"\n💾 데이터 저장: {DATA_FILE}")
 
     save_chart(data)
-    print(f"📊 차트 저장: {CHART_FILE}")
+    print(f"📊 기여 차트 저장: {CHART_FILE}")
+
+    if save_consumed_chart(data):
+        print(f"📊 섭취 차트 저장: {CONSUMED_FILE}")
+
+    if save_inventory_chart(inventory):
+        print(f"📊 인벤토리 저장: {INVENTORY_FILE}")
 
     readme = generate_readme(data)
-    with open(README_FILE, "w", encoding="utf-8") as f:
-        f.write(readme)
+    README_FILE.write_text(readme, encoding="utf-8")
     print(f"📄 README 업데이트: {README_FILE}")
 
     total = sum(v["total_calories"] for v in new_contributors.values())
-    print(f"\n=== ✅ 완료 | 참여자 {len(new_contributors)}명 | 총 {total:,} kcal ===")
+    total_consumed = sum(v.get("total_consumed_calories", 0) for v in new_contributors.values())
+    print(f"\n=== ✅ 완료 | 참여자 {len(new_contributors)}명 | 기여 {total:,} kcal | 섭취 {total_consumed:,} kcal ===")
 
 
 if __name__ == "__main__":

@@ -2,27 +2,30 @@
   "contributors": {
     "sisoin": {
       "total_calories": 9600,
+      "total_consumed_calories": 1440,
       "display_name": "배민준",
       "snacks": [
         {
           "name": "새우깡",
-          "quantity": 15,
+          "quantity": 20,
           "unit": "봉지",
           "count_per_unit": 1,
           "individual_unit": "봉지",
           "calories_per_unit": 480,
           "calories_per_individual": 480,
-          "total_calories": 7200
-        },
+          "total_calories": 9600
+        }
+      ],
+      "consumed": [
         {
           "name": "새우깡",
-          "quantity": 5,
+          "quantity": 3,
           "unit": "봉지",
           "count_per_unit": 1,
           "individual_unit": "봉지",
           "calories_per_unit": 480,
           "calories_per_individual": 480,
-          "total_calories": 2400
+          "total_calories": 1440
         }
       ]
     }
@@ -34,6 +37,17 @@
       "count_per_unit": 1,
       "individual_unit": "봉지",
       "calories_per_individual": 480
+    }
+  },
+  "inventory": {
+    "새우깡_봉지": {
+      "name": "새우깡",
+      "unit": "봉지",
+      "individual_unit": "봉지",
+      "count_per_unit": 1,
+      "contributed": 20,
+      "consumed": 3,
+      "remaining": 17
     }
   }
 }
